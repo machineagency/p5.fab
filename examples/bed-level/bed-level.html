@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/addons/p5.sound.min.js"></script>
+    <script src="https://unpkg.com/p5-webserial@0.1.1/build/p5.webserial.js"></script>
+    <script src="../addons/p5.gcoder.js"></script>
+    <script src="sketch.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"> 
+    <meta charset="utf-8" />
+
+  </head>
+  <body>
+    <h1> bed leveling!</h1>
+    <!-- <details> -->
+        <!-- <summary>about </summary> -->
+        <p style="text-align: left"> 
+            this page will walk through a manual bed leveling process for a 3D printer running Marlin firmware!
+            more info on the steps can be found in the <a href="https://github.com/KevinOConnor/klipper/blob/master/docs/Manual_Level.md"> Klipper documentation.</a>
+            this is a work in progress! please note that running unknown gcode might be dangerous. do not run this with your printer unattended!
+        </p>
+      <!-- </details> -->
+
+      <br/><br/>
+        <details>
+            <summary><h2 style="display: inline;"> step 0: connect to your printer</h2></summary>
+                <p style="text-align: left;">
+                    to start, turn your printer on and plug your printer to your computer with a micro-USB cable. <br>
+                    then, click here to connect to your printer!
+                </p>
+                <div id="bConnect"></div>
+        </details>
+
+        <br/><br/>
+        <details>
+            <summary><h2 style="display: inline;"> step 1: home and cool-down </h2></summary>
+                <p style="text-align: left;">
+                    it's best to run this test with your bed and nozzle at room temp. this stops molten plastic touching the paper, skewing calibration. thermal expansion of the nozzle and bed are constant and can
+                    be accounted for later, if necessary.<br/>
+                    if there's plastic on your nozzle, click here to heat up and clean it off.
+                </p>
+                <div id="bHeat"></div>
+                <p style="text-align: left;">
+                    and once your nozzle is clean, home and cool down your bed and nozzle.
+                </p>
+                <div id="bCool"></div>
+        </details>
+
+        <br/><br/>
+        <details>
+            <summary><h2 style="display: inline;"> step 2: paper test </h2></summary>
+                <p style="text-align: left;">
+                    now, grab a piece of paper. we'll move around to the position of each bed levelling screw and adjust the height so that there is some friction between the paper and nozzle when
+                    you slip the paper between the bed and nozzle. the exact amount of friction isn't too important, just make sure it's consistent across each position. <br/>
+                    after testing, click 'adjusted' if you had to adjust the screw, or 'accept' if no adjustment was needed. ('adjusted' will add another round of testing to the cycle.)<br/>
+                    ↻ to go up, 
+                </p>
+                <div id="bPaper"></div>
+        </details>
+
+        <br/><br/>
+        <details>
+            <summary><h2 style="display: inline;"> step 3: test print </h2></summary>
+                <p style="text-align: left;">
+                    once each position looks good, click here to heat up your nozzle and bed and run a test print!
+                </p>
+                <div id="bTest"></div>
+        </details>
+
+  </body>
+</html>
