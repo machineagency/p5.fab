@@ -48,10 +48,10 @@ function draw() {
 function gcodeDraw() {
   // setup printing variables
   // this is a standard setup block:
-  let s = 1000; // speed, mm/min
+  let s = 500; // speed, mm/min
   gcoder.setERelative();
   gcoder.fanOn();
-  gcoder.autoHome(); // 
+  gcoder.autoHome(); 
   gcoder.setNozzleTemp(200); // wait for nozzle to heat up
   gcoder.setBedTemp(70); // wait for bed to heat up
   gcoder.introLine(); // line back and forth to clean nozzle
@@ -62,7 +62,7 @@ function gcodeDraw() {
   let step = TWO_PI / 100;
   let startHeight = 0.2;
   let maxHeight = 150;
-  let layerHeight = 1;
+  let layerHeight = 0.2;
   let rb = 50;
   let amp = 5;
   // vase
@@ -83,7 +83,7 @@ function gcodeDraw() {
       gcoder.moveExtrude(x, y, z, s);
     }
   }
-  // end artifact
+  // // // end artifact
 
   gcoder.render(); // if you want to visualize it
   gcoder.presentPart(); // pop the bed out. 
@@ -91,20 +91,14 @@ function gcodeDraw() {
 }
 
 function onData() {
-  let lineFeedChar = 10;
-  let incomingChar = gcoder.serial.readBytes();
-  let resp = "";
-  if (incomingChar[incomingChar.length - 1] == lineFeedChar) {
-    for (let i = 0; i < incomingChar.length; i++) {
-      resp += String.fromCharCode(incomingChar[i]);
-    }
-  }
+  gcoder.serialResp += gcoder.serial.readString();
 
-  console.log("The response is: " + incomingChar);
-  if (resp.search("k") > -1 || resp == "\n") {  // eek... sometimes o and k come in different packets!
-    gcoder.emit("ok", gcoder);
-  } else {
-    console.log("waiting...");
+  if (gcoder.serialResp.slice(-1) == '\n') {
+    console.log(gcoder.serialResp);
+    if (gcoder.serialResp.search('ok') > -1) {
+      gcoder.emit("ok", gcoder);
+    }
+    gcoder.serialResp = '';
   }
 }
 
@@ -113,3 +107,53 @@ function changeBG() {
     let val = random(255);
     gcoder.serial.requestPort();
   }
+
+
+
+
+
+  // this is my tidy example gcodeDraw(); replace it after I finish dev stuff
+  // function gcodeDraw() {
+  //     // setup printing variables
+  //     // this is a standard setup block:
+  //     let s = 1000; // speed, mm/min
+  //     gcoder.setERelative();
+  //     gcoder.fanOn();
+  //     gcoder.autoHome(); // 
+  //     gcoder.setNozzleTemp(200); // wait for nozzle to heat up
+  //     gcoder.setBedTemp(70); // wait for bed to heat up
+  //     gcoder.introLine(); // line back and forth to clean nozzle
+    
+  //     // design your artifact here!
+  //     // here's a vase example
+  //     let r = 10;
+  //     let step = TWO_PI / 100;
+  //     let startHeight = 0.2;
+  //     let maxHeight = 150;
+  //     let layerHeight = 1;
+  //     let rb = 50;
+  //     let amp = 5;
+  //     // vase
+  //     for (let z = startHeight; z < maxHeight; z += layerHeight) {
+  //       let a = map(z, startHeight, maxHeight, 0, 4 * TWO_PI);
+  //       r = map(
+  //         cos(map(z / maxHeight, 0, 1, 2, 0.5) * a),
+  //         -1,
+  //         1,
+  //         rb - 5 * cos(a) * (1 - z / maxHeight),
+  //         rb + 5 * cos(a) * (1 - z / maxHeight)
+  //       );
+    
+  //       console.log(rb - (1 - z / maxHeight));
+  //       for (let t = 0; t < TWO_PI; t += step) {
+  //         let x = r * cos(t) + 100;
+  //         let y = r * sin(t) + 100;
+  //         gcoder.moveExtrude(x, y, z, s);
+  //       }
+  //     }
+  //     // end artifact
+    
+  //     gcoder.render(); // if you want to visualize it
+  //     gcoder.presentPart(); // pop the bed out. 
+  //     gcoder.print(); //print it!
+  //   }

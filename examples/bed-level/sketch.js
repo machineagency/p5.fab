@@ -81,20 +81,14 @@ function gcodeDraw() {
 }
 
 function onData() {
-  let lineFeedChar = 10;
-  let incomingChar = gcoder.serial.readBytes();
-  let resp = "";
-  if (incomingChar[incomingChar.length - 1] == lineFeedChar) {
-    for (let i = 0; i < incomingChar.length; i++) {
-      resp += String.fromCharCode(incomingChar[i]);
-    }
-  }
+  gcoder.serialResp += gcoder.serial.readString();
 
-  console.log("The response is: " + incomingChar);
-  if (resp.search("k") > -1 || resp == "\n") {  // eek... sometimes o and k come in different packets!
-    gcoder.emit("ok", gcoder);
-  } else {
-    console.log("waiting...");
+  if (gcoder.serialResp.slice(-1) == '\n') {
+    console.log(gcoder.serialResp);
+    if (gcoder.serialResp.search('ok') > -1) {
+      gcoder.emit("ok", gcoder);
+    }
+    gcoder.serialResp = '';
   }
 }
 
@@ -147,23 +141,41 @@ function paperTestAccepted() {
 
 function testPrint() {
   gcoder.commands = [];
+  gcoder.setERelative();
   gcoder.autoHome();
-  gcoder.setNozzleTemp(200);
-  gcoder.setBedTemp(65);
+  // gcoder.setNozzleTemp(200);
+  // gcoder.setBedTemp(60);
+  gcoder.introLine();
   gcoder.move(30,30,0.5);
   let o = 10;
   let s = 1000;
-  gcoder.moveExtrude(30,100, 0.5, s);
-  gcoder.moveExtrude(100,100,0.5,s);
-  gcoder.moveExtrude(100,30,0.5, s);
-  gcoder.moveExtrude(30,30,0.5, s);
-  // for (let l = 170; l > 10; l-=2*o) {
-  //   gcoder.moveExtrude(30+l,30,0);
-  //   gcoder.moveExtrude(30+l, 30+l-o,0);
-  //   gcoder.moveExtrude(30+o, 30+l-o, 0);
-  //   gcoder.moveExtrude(30+0, 30+0, 0);
-  // }
+  let lx = 0;
+  let ly = 0;
+  let count = 0;
+  for (let i = 0; i < 9; i++){
+    gcoder.moveExtrude(200-lx, 30+ly, 0.3);
+    console.log([200-lx, 30+ly]);
+    [count, lx, ly] = checkCount(count, lx, ly);
+    gcoder.moveExtrude(200-lx, 200-ly, 0.3);
+    console.log([200-lx, 200-ly]);
+    [count, lx, ly] = checkCount(count, lx, ly);
+    gcoder.moveExtrude(30+lx, 200-ly, 0.3);
+    console.log([30+lx, 200-ly]);
+    [count, lx, ly] = checkCount(count, lx, ly);
+    gcoder.moveExtrude(30 +lx, 30+ly, 0.3);
+    console.log([30+lx, 30+ly]);
+    [count, lx, ly] = checkCount(count, lx, ly);
+  }
 
-  
+  gcoder.up(10);
+  gcoder.presentPart();
   gcoder.print();
+}
+
+function checkCount(count, lx, ly) {
+  count++;
+  ly = (count+1) % 4 == 0 ? ly+10 : ly;
+  lx = (count>0 && (count+1) % 4 == 1) ? lx+10 : lx;
+
+  return [count, lx, ly]
 }
