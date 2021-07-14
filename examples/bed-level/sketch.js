@@ -140,11 +140,11 @@ function paperTestAccepted() {
 }
 
 function testPrint() {
-  gcoder.commands = [];
+  // gcoder.commands = [];
   gcoder.setERelative();
   gcoder.autoHome();
-  // gcoder.setNozzleTemp(200);
-  // gcoder.setBedTemp(60);
+  gcoder.setNozzleTemp(200);
+  gcoder.setBedTemp(60);
   gcoder.introLine();
   gcoder.move(30,30,0.5);
   let o = 10;
@@ -168,6 +168,10 @@ function testPrint() {
   }
 
   gcoder.up(10);
+
+  // gcoder.move(30, 50, 0.2);
+  // gcoder.moveExtrude(200, 50, 0.6);
+
   gcoder.presentPart();
   gcoder.print();
 }

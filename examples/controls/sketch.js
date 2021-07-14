@@ -9,6 +9,32 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
 
+  //Controls UI
+  textFont(font);
+  textSize(36);
+  textAlign(CENTER, CENTER);
+  let h = createElement('h2', 'position');
+  h.position(20, 5);
+  inputX = createInput();
+  inputX.position(20, 65);
+  buttonX = createButton('x');
+  buttonX.position(inputX.x + inputX.width, 65);
+  buttonX.mousePressed(sendX);
+  inputY = createInput();
+  inputY.position(20, 105);
+  buttonY = createButton('y');
+  buttonY.position(inputY.x + inputY.width, 105);
+  buttonY.mousePressed(sendY);
+  inputZ = createInput();
+  inputZ.position(20, 145);
+  buttonZ = createButton('z');
+  buttonZ.position(inputZ.x + inputZ.width, 145);
+  buttonZ.mousePressed(sendZ);
+
+  buttonStop = createButton('stop');
+  buttonStop.position(inputX.x, 185);
+  buttonStop.mousePressed(sendStop);
+
   gcoder = new GCoder();
   gcoder.on("ok", gcoder.serial_ok);
   button = createButton('click me');
@@ -32,9 +58,8 @@ function setup() {
     // we have a serial port; ender wants to talk at 115200
     gcoder.serial.open({ baudRate: "115200" });
 
-    textFont(font);
-    textSize(36);
-    textAlign(CENTER, CENTER);
+
+
   });
 
   gcoder.serial.on("requesterror", function () {
@@ -46,17 +71,17 @@ function setup() {
 }
 
 function draw() {
-  orbitControl(2, 2, 0.001);
-  background(0);
-  normalMaterial();
-  lights();
-  if (gcoder.model) {
-    model(gcoder.model);
-  }
-  stroke(255);
-  fill(255);
-  textFont(font);
-  text(gcoder.reportedPos, 0,0)
+  // orbitControl(2, 2, 0.001);
+  // background(255);
+  // normalMaterial();
+  // lights();
+  // if (gcoder.model) {
+  //   model(gcoder.model);
+  // }
+  // stroke(0);
+  // fill(255);
+  // textFont(font);
+  // text(gcoder.reportedPos, 0,0)
 
 }
 
@@ -73,38 +98,68 @@ function gcodeDraw() {
   // gcoder.setBedTemp(70); // wait for bed to heat up
   // gcoder.introLine(); // line back and forth to clean nozzle
   gcoder.getPos();
+  // test vals
+  // gcoder.move(200, 32, 76.3);
+  // gcoder.move(160, 32, 69.4);
+  // gcoder.move(170, 32, 71.125);
+  // gcoder.move(190, 32, 74.575);
+
   // custom intro line to avoid collision
-  // gcoder.move(200, 45, 73); //p1
-  // gcoder.move(160, 45, 66.5); //p2
-  gcoder.move(220, 200, 100, s);
+  // gcoder.move(200, 35, 76.6); //p1
+  // gcoder.move(160, 35, 70); //p2
+  // gcoder.move(170, 35, 71.575);
+  // gcoder.move(190, 35, 74.725);
+  // gcoder.move(200, 35, 76.6); //p1
+  gcoder.move(220, 199, 100, s);
   gcoder.setNozzleTemp(200);
-  gcoder.move(220, 200, 1.2);
-  gcoder.moveExtrude(30, 200, 1.2);
-  gcoder.moveExtrude(30, 199, 1.2);
-  gcoder.moveExtrude(220, 199, 1.2);
-  gcoder.moveExtrude(220, 198, 1.2);
-  gcoder.moveExtrude(30, 198, 1.2);
-  gcoder.moveExtrude(30, 197, 1.2);
-  gcoder.moveExtrude(220, 197, 1.2);
+  // gcoder.move(220, 199, 1.2);
+  gcoder.moveExtrude(30, 200, 2);
+  gcoder.moveExtrude(30, 199, 2);
+  gcoder.moveExtrude(220, 199, 2);
+  gcoder.moveExtrude(220, 198, 2);
+  gcoder.moveExtrude(30, 198, 2);
+  gcoder.moveExtrude(30, 197, 2);
+  gcoder.moveExtrude(220, 197, 2);
   gcoder.move(220, 197, 100); //pop up to avoid collisions
 
-  // mug handle
-  gcoder.move(200, 45, 73, 1000); //p1
-  gcoder.moveExtrude(160, 45, 66.5, 100); //p2
-  for (let o = 0.2; o<=5; o+=0.2) {
-    gcoder.moveExtrude(200, 45, 73+o, s);
-    gcoder.moveExtrude(160, 45, 66.5+o, s);
+  // // // mug handle
+  gcoder.move(200, 35, 76.6, 1000); //p1
+  gcoder.moveExtrude(160, 35, 70, 100); //p2
+  let startx = 160;
+  let endx = 200;
+  for (let o = 0.2; o<20; o+=0.2) {
+    gcoder.move(startx, 35, 70+o, s);
+    gcoder.moveExtrude(endx, 35, 76.6+o, s);
+    o+=0.2;
+    startx += 0.5;
+    endx -= 0.5;
+    gcoder.move(endx, 35, 76.6+o, s);
+    gcoder.moveExtrude(startx, 35, 70+o, s);
   }
-  for (o=5.2; o<=10; o+=0.2) {
-    gcoder.move(160, 45, 66.5+o, s);
-    gcoder.moveExtrude(170, 45, 68.125+o, s);
-    gcoder.move(190, 45, 71.375+o, s);
-    gcoder.moveExtrude(200, 45, 73+o, s);
-  }
-  for (o = 10.2; o<=15; o+=0.2) {
-    gcoder.moveExtrude(160, 45, 66.5+o, s);
-    gcoder.moveExtrude(200, 45, 73+o, s);
-  }
+
+  // for (let o = 0.2; o<=5; o+=0.2) {
+  //   gcoder.moveExtrude(160, 35, 70+o);
+  //   gcoder.moveExtrude(200, 35, 76.6+o, s);
+  //   o += 0.2;
+  //   gcoder.moveExtrude(200, 35, 76.6+o, s);
+  //   gcoder.moveExtrude(160, 35, 70+o, s);
+  // }
+  // for (o=5.2; o<=10; o+=0.2) {
+  //   gcoder.move(160, 35, 70+o, s);
+  //   gcoder.moveExtrude(170, 35, 71.575+o, s);
+  //   gcoder.move(190, 35, 74.725+o, s);
+  //   gcoder.moveExtrude(200, 35, 76.6+o, s);
+  //   o += 0.2;
+  //   gcoder.moveExtrude(200, 35, 76.6+o, s);
+  //   gcoder.moveExtrude(190, 35, 74.725+o, s);
+  //   gcoder.move(170, 35, 71.575+o, s);
+  //   gcoder.moveExtrude(160, 35, 70+o, s);
+  // }
+  // for (o = 10.2; o<=15; o+=0.2) {
+  //   gcoder.moveExtrude(160, 35, 70+o, s);
+  //   o += 0.2
+  //   gcoder.moveExtrude(200, 35, 76.3+o, s);
+  // }
 
 
 
@@ -196,52 +251,31 @@ function changeBG() {
     gcoder.serial.requestPort();
   }
 
+function sendX() {
+  const x = inputX.value();
+  inputX.value('');
 
+  gcoder.moveX(x);
+  gcoder.print();
+}
 
+function sendY() {
+  const y = inputY.value();
+  inputY.value('');
 
+  gcoder.moveY(y);
+  gcoder.print();
+}
 
-  // this is my tidy example gcodeDraw(); replace it after I finish dev stuff
-  // function gcodeDraw() {
-  //     // setup printing variables
-  //     // this is a standard setup block:
-  //     let s = 1000; // speed, mm/min
-  //     gcoder.setERelative();
-  //     gcoder.fanOn();
-  //     gcoder.autoHome(); // 
-  //     gcoder.setNozzleTemp(200); // wait for nozzle to heat up
-  //     gcoder.setBedTemp(70); // wait for bed to heat up
-  //     gcoder.introLine(); // line back and forth to clean nozzle
-    
-  //     // design your artifact here!
-  //     // here's a vase example
-  //     let r = 10;
-  //     let step = TWO_PI / 100;
-  //     let startHeight = 0.2;
-  //     let maxHeight = 150;
-  //     let layerHeight = 1;
-  //     let rb = 50;
-  //     let amp = 5;
-  //     // vase
-  //     for (let z = startHeight; z < maxHeight; z += layerHeight) {
-  //       let a = map(z, startHeight, maxHeight, 0, 4 * TWO_PI);
-  //       r = map(
-  //         cos(map(z / maxHeight, 0, 1, 2, 0.5) * a),
-  //         -1,
-  //         1,
-  //         rb - 5 * cos(a) * (1 - z / maxHeight),
-  //         rb + 5 * cos(a) * (1 - z / maxHeight)
-  //       );
-    
-  //       console.log(rb - (1 - z / maxHeight));
-  //       for (let t = 0; t < TWO_PI; t += step) {
-  //         let x = r * cos(t) + 100;
-  //         let y = r * sin(t) + 100;
-  //         gcoder.moveExtrude(x, y, z, s);
-  //       }
-  //     }
-  //     // end artifact
-    
-  //     gcoder.render(); // if you want to visualize it
-  //     gcoder.presentPart(); // pop the bed out. 
-  //     gcoder.print(); //print it!
-  //   }
+function sendZ() {
+  const z = inputZ.value();
+  inputX.value('');
+
+  gcoder.moveZ(z);
+  gcoder.print();
+}
+
+function sendStop() {
+  gcoder.stopPrint();
+  gcoder.print();
+}
