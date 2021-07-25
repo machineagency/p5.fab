@@ -1,25 +1,44 @@
 # Getting Started
 This page has info on how to start using the p5.dicer library in p5.js with high level info on how the library works.
+
 **Note 1:** This library relies on WebSerial support, and therefore is only supported on Chrome at this time. More options are in progress, but for now, *use Chrome!* 
+**Note 2:** If you're running p5 locally, you'll need to launch [local server](https://github.com/processing/p5.js/wiki/Local-server) as well. Since we have to use Chrome already,
+[Web Server for Chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb) is a good option to do this easily. If this sounds unfamiliar to you,
+see my step-by-step guide [here](./local-server.md).
 
-## Installation
-The info below explains how to use p5.dicer in your own sketches
-### Option 1: Local
-Download the [p5.gcoder.js library file](https://raw.githubusercontent.com/bsubbaraman/p5.gcoder/main/lib/p5.gcoder.js) and add the path to the `<head>` tag of your `index.html` file: 
+***
 
-`<script src="p5.gcoder.js"></script>`
+## Physical Setup
+p5.dicer talks to your printer over serial communication. Turn your printer on and connect your Ender to your computer using a microUSB cable next to the input next to the SD card. Since we are streaming the print from the computer, the print will stop if your computer loses power or goes to sleep. I recommend turning your computer's sleep timer off, and keeping your computer powered if running a long print.
 
-Note that you will need to run a [local server](https://github.com/processing/p5.js/wiki/Local-server) as well.
+## p5 Setup
+First, set up a Dicer object. It can optionally take several parameters to accomodate different 3D printers, but the default settings are for an Ender 3 Pro or V2. The WebSerial library requires user input to connect to a serial port, so we also set up buttons to connect to the printer and to start the print.
 
-### Option 2: p5.js Web Editor
-Add a new file to the web editor by opening the _Sketch Files_ Menu on the left-hand side, and then selecting _Create File_; we suggest naming the file p5.gcoder.js. Copy-paste the contents of the [p5.gcoder.js library file](https://raw.githubusercontent.com/bsubbaraman/p5.gcoder/main/lib/p5.gcoder.js). Navigate to `index.html` and add the path to your new file to the `<head>` tag:
+```javascript
+let dicer
 
-`<script src="p5.gcoder.js"></script>`
+function setup() {
+    createCanvas(windowWidth, windowHeight, WEBGL);
+    dicer = createDicer();
 
-### Dependencies
-This library relies on serial communication for your printer and p5 to talk. The easiest option is to use [p5.WebSerial](https://github.com/yoonbuck/p5.WebSerial), which will only work in the Chrome Browser. Regardless of your installation choice, add the following line to your `index.html` file to use p5.WebSerial:
+    let connectButton = createButton('connect!');
+    connectButton.position(20, 20);
+    connectButton.mousePressed(function() {
+    dicer.serial.requestPort();
+  });
 
-`<script src="https://unpkg.com/p5-webserial@0.1.1/build/p5.webserial.js"></script>`
+    let printButton = createButton('print!');
+    printButton.position(20, 60);
+    printButton.mousePressed(function() {
+    dicer.print();
+  });
+}
+```
 
-For more installation options, see [here](https://github.com/yoonbuck/p5.WebSerial/wiki/Guide). 
+By default, Dicer will remember the port you have access to and try to connect to it automatically across refreshes. If you always want to start your print immediately, you can omit the print button and instead enable `printOnOpen()`, which will send the print as soon as Dicer has connected to a serial port. 
+
+In addition to `setup()` and `draw()`, p5.dicer introudes `dicerDraw()` which runs immediately after `setup` completes. This is where you can author your artifacts!
+
+
+
 

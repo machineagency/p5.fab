@@ -5,7 +5,7 @@ To 3D print an object, a canonical workflow starts with designing a CAD model th
 away many tedious details, but also requires owning & learning CAD. The p5.dicer library is for users who might appreciate the control offered by direct gcode manipulation. It seeks
 to support repeatable & controlled experimentation (testing/tuning/calibrating the machine, learning how the printer works, examining material properties) as well as open-ended exploration (generative form-finding, quick design iterations).
 
-To get started, check out the [getting started page](./docs/tutorial/getting-started.md), take a look at the [examples](./examples), or explore the documentation (in progress).
+To get started, check out the [getting started page](./docs/tutorials/getting-started.md), take a look at the [examples](./examples), or explore the documentation (in progress).
 
 ## Installation
 This library relies on WebSerial support, and therefore is only supported on Chrome at this time (see *Dependencies* below). More options are in progress, but for now, use Chrome!
