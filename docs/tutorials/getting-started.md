@@ -1,4 +1,4 @@
-# Getting Started
+# Getting Started!
 This page has info on how to start using the p5.dicer library in p5.js with high level info on how the library works.
 
 **Note 1:** This library relies on WebSerial support, and therefore is only supported on Chrome at this time. More options are in progress, but for now, *use Chrome!* 
@@ -17,7 +17,7 @@ The following steps also assume that your bed is leveled, and you already have a
 First, set up a Dicer object. It can optionally take several parameters to accomodate different 3D printers, but the default settings are for an Ender 3 Pro or V2. The WebSerial library requires user input to connect to a serial port, so we also set up buttons to connect to the printer and to start the print.
 
 ```javascript
-let dicer
+let dicer;
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
