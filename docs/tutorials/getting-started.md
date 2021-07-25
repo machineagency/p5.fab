@@ -1,15 +1,9 @@
-# p5.dicer
-p5.dicer.js is a p5.js library for 3D printing. It helps you author generative physical artifacts!
-
-To 3D print an object, a canonical workflow starts with designing a CAD model then using a slicer software to generate machine readable G-code. This process abstracts
-away many tedious details, but also requires owning & learning CAD. The p5.dicer library is for users who might appreciate the control offered by direct gcode manipulation. It seeks
-to support repeatable & controlled experimentation (testing/tuning/calibrating the machine, learning how the printer works, examining material properties) as well as open-ended exploration (generative form-finding, quick design iterations).
-
-To get started, check out the [getting started page](./docs/tutorial/getting-started.md), take a look at the [examples](./examples), or explore the documentation (in progress).
+# Getting Started
+This page has info on how to start using the p5.dicer library in p5.js with high level info on how the library works.
+**Note 1:** This library relies on WebSerial support, and therefore is only supported on Chrome at this time. More options are in progress, but for now, *use Chrome!* 
 
 ## Installation
-This library relies on WebSerial support, and therefore is only supported on Chrome at this time (see *Dependencies* below). More options are in progress, but for now, use Chrome!
-
+The info below explains how to use p5.dicer in your own sketches
 ### Option 1: Local
 Download the [p5.gcoder.js library file](https://raw.githubusercontent.com/bsubbaraman/p5.gcoder/main/lib/p5.gcoder.js) and add the path to the `<head>` tag of your `index.html` file: 
 
@@ -28,3 +22,4 @@ This library relies on serial communication for your printer and p5 to talk. The
 `<script src="https://unpkg.com/p5-webserial@0.1.1/build/p5.webserial.js"></script>`
 
 For more installation options, see [here](https://github.com/yoonbuck/p5.WebSerial/wiki/Guide). 
+
