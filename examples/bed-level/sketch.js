@@ -1,4 +1,4 @@
-let gcoder;
+let dicer;
 let buttons;
 let testState = 0;
 let acceptCount = 0;
@@ -13,37 +13,7 @@ let positions = {
 function setup() {
   // createCanvas(400, 400, WEBGL);
 
-  gcoder = new GCoder();
-  gcoder.on("ok", gcoder.serial_ok);
-
-  gcoder.serial.on("noport", function () {
-      console.log('noport');
-    // we don't have access to any ports yet, so we need to request them.
-    // add an event listener for a user clicking on the page
-    document.addEventListener(
-      "click",
-      function () {
-          console.log('click');
-        gcoder.serial.requestPort();
-      },
-      { once: true }
-    );
-
-    //UI
-    button = createButton('connect to printer', 0, 0);
-  });
-
-  gcoder.serial.on("portavailable", function () {
-    // we have a serial port; ender wants to talk at 115200
-  gcoder.serial.open({ baudRate: "115200" });
-  });
-
-  gcoder.serial.on("requesterror", function () {
-    console.log("error!");
-  });
-
-  gcoder.serial.on("open", gcodeDraw);
-  gcoder.serial.on("data", onData);
+  dicer = createDicer();
 
   // UI things
   let buttonConnect = createButton('connect to printer');
@@ -81,41 +51,41 @@ function gcodeDraw() {
 }
 
 function onData() {
-  gcoder.serialResp += gcoder.serial.readString();
+  dicer.serialResp += dicer.serial.readString();
 
-  if (gcoder.serialResp.slice(-1) == '\n') {
-    console.log(gcoder.serialResp);
-    if (gcoder.serialResp.search('ok') > -1) {
-      gcoder.emit("ok", gcoder);
+  if (dicer.serialResp.slice(-1) == '\n') {
+    console.log(dicer.serialResp);
+    if (dicer.serialResp.search('ok') > -1) {
+      dicer.emit("ok", dicer);
     }
-    gcoder.serialResp = '';
+    dicer.serialResp = '';
   }
 }
 
 async function connectToPrinter() {
-    gcoder.commands = [];
-    await gcoder.serial.requestPort();
+    dicer.commands = [];
+    await dicer.serial.requestPort();
 }
 
 function heatNozzle() {
-  gcoder.autoHome();
-  gcoder.move(100, 100, 100, 3000);
-  gcoder.setNozzleTemp(200);
-  gcoder.print();
+  dicer.autoHome();
+  dicer.move(100, 100, 100, 3000);
+  dicer.setNozzleTemp(200);
+  dicer.print();
 }
 
 function coolPrinter() {
-  gcoder.autoHome();
-  gcoder.setNozzleTemp(0);
-  gcoder.setNozzleTemp(0);
-  gcoder.print();
+  dicer.setNozzleTemp(0);
+  dicer.autoHome();
+  
+  dicer.print();
 }
 
 function paperTestCycle() {
   let p = positions[testState];
-  gcoder.up(3);
-  gcoder.move(p[0], p[1], p[2], p[3], p[4]);
-  gcoder.print();
+  dicer.up(3);
+  dicer.move(p[0], p[1], p[2], p[3], p[4]);
+  dicer.print();
 }
 
 function paperTestAdjusted() {
@@ -140,40 +110,40 @@ function paperTestAccepted() {
 }
 
 function testPrint() {
-  // gcoder.commands = [];
-  gcoder.setERelative();
-  gcoder.autoHome();
-  gcoder.setNozzleTemp(200);
-  gcoder.setBedTemp(60);
-  gcoder.introLine();
-  gcoder.move(30,30,0.5);
+  // dicer.commands = [];
+  dicer.setERelative();
+  dicer.autoHome();
+  dicer.setNozzleTemp(210);
+  dicer.setBedTemp(60);
+  dicer.introLine();
+  dicer.move(30,30,0.5);
   let o = 10;
   let s = 1000;
   let lx = 0;
   let ly = 0;
   let count = 0;
   for (let i = 0; i < 9; i++){
-    gcoder.moveExtrude(200-lx, 30+ly, 0.3);
+    dicer.moveExtrude(200-lx, 30+ly, 0.3);
     console.log([200-lx, 30+ly]);
     [count, lx, ly] = checkCount(count, lx, ly);
-    gcoder.moveExtrude(200-lx, 200-ly, 0.3);
+    dicer.moveExtrude(200-lx, 200-ly, 0.3);
     console.log([200-lx, 200-ly]);
     [count, lx, ly] = checkCount(count, lx, ly);
-    gcoder.moveExtrude(30+lx, 200-ly, 0.3);
+    dicer.moveExtrude(30+lx, 200-ly, 0.3);
     console.log([30+lx, 200-ly]);
     [count, lx, ly] = checkCount(count, lx, ly);
-    gcoder.moveExtrude(30 +lx, 30+ly, 0.3);
+    dicer.moveExtrude(30 +lx, 30+ly, 0.3);
     console.log([30+lx, 30+ly]);
     [count, lx, ly] = checkCount(count, lx, ly);
   }
 
-  gcoder.up(10);
+  dicer.up(10);
 
-  // gcoder.move(30, 50, 0.2);
-  // gcoder.moveExtrude(200, 50, 0.6);
+  // dicer.move(30, 50, 0.2);
+  // dicer.moveExtrude(200, 50, 0.6);
 
-  gcoder.presentPart();
-  gcoder.print();
+  dicer.presentPart();
+  dicer.print();
 }
 
 function checkCount(count, lx, ly) {
