@@ -42,8 +42,7 @@ function dicerDraw() {
 
     r -= 0.1; 
   }
-  dicer.moveRetract(dicer.maxX/2, dicer.maxY/2, 100);
-  // dicer.presentPart();
+  dicer.presentPart();
 }
 
 function draw() {
