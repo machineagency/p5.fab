@@ -35,15 +35,19 @@ function setup() {
       dicer.print(); // start streaming the commands to printer
     });
 }
+
+function draw() {
+  // you can leave the draw loop empty for now
+}
 ```
 
 Save the sketch and try clicking the connect button. You should receive a prompt which includes a serial port to open. By default, Dicer will remember the port you have access to and try to connect to it automatically across refreshes. If you always want to start your print immediately, you can omit the print button and instead enable `printOnOpen()`, which will send the print as soon as Dicer has connected to a serial port. 
 
-In addition to `setup()` and `draw()`, p5.dicer introudes `dicerDraw()` which runs immediately after `setup` completes. This is where you can author your artifacts! The first thing to do in `dicerDraw` is set up some print settings. A standard way to start is to set the coordinate modes of the printer. In absolute mode, all coordinates will be interpreted as positions in the printer's coordinate space; in relative mode, coordinates are interpreted as relative to the last position. To avoid damaging your printer, it's a good idea to explicitly set your mode:
+In addition to `setup()` and `draw()`, p5.dicer introudes `dicerDraw()` which runs immediately after `setup` completes and before the first call calll to `draw`. This is where you can author your artifacts! The first thing to do in `dicerDraw` is set up some print settings. A standard way to start is to set the coordinate modes of the printer. In absolute mode, all coordinates will be interpreted as positions in the printer's coordinate space; in relative mode, coordinates are interpreted as relative to the last position. To avoid damaging your printer, it's a good idea to explicitly set your mode:
 
 ```javascript
 function dicerDraw() {
-  dicer.setAbsolutePosition(); // set all axes (x.y/z/extruder) to absolute
+  dicer.setAbsolutePosition(); // set all axes (x/y/z/extruder) to absolute
   dicer.setERelative(); // put extruder in relative mode, independent of other axes
 }
 ```
@@ -78,7 +82,7 @@ Where `speed` defines how fast the toolhead will move from position to position 
 cube using different `move` commands:
 
 ```javascript
-dicer.moveRetract(startX, startY, layerHeight); // move to the start (x,y,z) position without extruding
+dicer.moveRetract(x, y, layerHeight); // move to the start (x,y,z) position without extruding
 
 for (let z = layerHeight; z <= sideLength; z += layerHeight) { 
   dicer.moveExtrude(x + sideLength, y, z, speed); // move along the bottom side while extruding filament
@@ -86,10 +90,27 @@ for (let z = layerHeight; z <= sideLength; z += layerHeight) {
   dicer.moveExtrude(x, y + sideLength, z, speed); // top side
   dicer.moveExtrude(x, y, z, speed); //left side
 }
-
-
 ```
-The `moveExtrude()` command will move while extruding filament, calculating the correct amount of filament as it goes. `moveRetract()`, on the other hand, will move without extruding and pull the filament back a little to prevent oozing (though the proper retraction amount will depand on your printer filament & temperature). This loop will print a 20mm hollow box, but once it finishes it will be hard to take the cube of the print bed with the nozzle still in the way! We can add the following line to send the hotend to the back left of the printer:
+
+The `moveExtrude()` command will move while extruding filament, calculating the correct amount of filament as it goes. `moveRetract()`, on the other hand, will move without extruding and pull the filament back a little to prevent oozing (though the proper retraction amount will depand on your printer filament & temperature). Depending on how well your filament adheres to your bed, the print generated from this code may not stick well. Many slicers offer the ability to move slower on the first layer to promote better adhesion; we can accomplish this with the following edit to the above for loop:
+
+```javascript
+for (let z = layerHeight; z <= sideLength; z += layerHeight) { 
+  if (z == layerHeight) { // if it's the first layer
+    speed = 300; // slow print speeed down for the first layer
+  }
+  else {
+    speed = 1000; // on subsequent layers, speed things up!
+  }
+
+  dicer.moveExtrude(x + sideLength, y, z, speed); // move along the bottom side while extruding filament
+  dicer.moveExtrude(x + sideLength, y + sideLength, z, speed); // right side
+  dicer.moveExtrude(x, y + sideLength, z, speed); // top side
+  dicer.moveExtrude(x, y, z, speed); //left side
+}
+```
+
+Now the print head will move slower on the first layer for better adhesion! This loop will print a 20mm hollow box, but once it finishes it will be hard to take the cube of the print bed with the nozzle still in the way! We can add the following line to send the hotend to the back left of the printer:
 
 ```javascript
 dicer.presentPart();
