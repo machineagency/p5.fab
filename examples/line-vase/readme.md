@@ -3,7 +3,7 @@ Direct G-Code manipulation lets us print structures that might be quite difficul
 
 The exact values used below might need to be tuned depending on your machine & filament. 
 
-![vase](./assets/line-vase.png)
+![vase](./assets/vase.png)
 
 ```javascript
 let dicer;

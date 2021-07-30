@@ -1,6 +1,8 @@
 # Unconventional Calibration
 We can use the [control panel](../control-panel) to help us print on top of another object. The calibration routine is based off of the process for normal [bed leveling](../bed-level), where you adjust the knobs of the printer bed such that the four corners of the bed paper's width (~0.2mm) from the nozzle. We can use this routine to accomplish tasks that might be difficult using traditional CAD & slicers, like print a handle on a cup. 
 
+![handle](./assets/handle.jpg)
+
 - First, bring the hotend up from the bed and cool down & clean the nozzle. You don't wan't any molten filament skewing the calibration.
 
 - Using a clip or other adhesive, attach the cup to the printer bed. Note that adding another clip might raise other parts of the corners, so be careful of scratching the bed with the nozzle.
