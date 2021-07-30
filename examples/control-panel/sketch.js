@@ -8,90 +8,8 @@ function setup() {
   dicer = createDicer(); 
 }
 
-function draw() {
-  orbitControl(2, 2, 0.001);
-  background(255);
-  normalMaterial();
-  lights();
-  if (dicer.model) {
-    model(dicer.model);
-  }
-
-}
-
 function dicerDraw() {
-  dicer.commands = [];
-  dicer.setAbsolutePosition();
-  dicer.setERelative();
-
-  dicer.move(200, 100, 100);
-  dicer.setNozzleTemp(210);
-
-  // //custom intro line
-  dicer.setAbsolutePosition();
-  dicer.setERelative();
-  dicer.move(200, 200, 100);
-  dicer.move(220, 199, 0.6);
-  dicer.moveExtrude(30, 200, 0.6);
-  dicer.moveExtrude(30, 199, 0.6);
-  dicer.moveExtrude(220, 199, 0.6);
-  dicer.moveExtrude(220, 198, 0.6);
-  dicer.moveExtrude(30, 198, 0.6);
-  dicer.moveExtrude(30, 197, 0.6);
-  dicer.moveExtrude(220, 197, 0.6);
-  dicer.move(220, 197, 100); //pop up to avoid collisions
-  
-  // handle
- let y = 45;
- let x1 = 200;
- let z1 = 72;
- let x2 = 170;
- let z2 = 68.2;
- let s = 300;
- let layerHeight = 0.25;
- const [m,b] = slope(x1, z1, x2, z2);
-
- dicer.move(x1, y, z1);
- // put down 1 mm of base layers
- for (let h = 0; h <= 1; h += layerHeight) {
-  dicer.moveExtrude(x1, y, z1 + h, s);
-  dicer.moveExtrude(x2, y, z2 + h, s);
-  h += layerHeight;
-  dicer.moveExtrude(x2, y, z2 + h, s)
-  dicer.moveExtrude(x1, y, z1 + h, s);
- }
-
- // thin structure
- for (h=1.25; h < 10; h+= layerHeight) {
-  x2 = 190;
-  z2 = m*x2 + b;
-  dicer.moveExtrude(x1, y, z1 + h, s);
-  dicer.moveExtrude(x2, y, z2 + h, s);
-  h += layerHeight;
-  dicer.moveExtrude(x2, y, z2+h, s);
-  dicer.moveExtrude(x1, y, z1+h, s);
- }
-
-// handle end
- for (h=10.25; h < 15; h+= layerHeight) {
-  x2 -= 0.2;
-  z2 = m*x2 + b;
-  dicer.moveExtrude(x1, y, z1 + h, s);
-  dicer.moveExtrude(x2, y, z2 + h, s);
-  h += layerHeight;
-  dicer.moveExtrude(x2, y, z2+h, s);
-  dicer.moveExtrude(x1, y, z1+h, s);
- }
- 
-  dicer.moveRetract(200, 50, 100);
-  dicer.print();
-}
-
-function slope(x1, z1, x2, z2) {
-  let m = (z2 - z1) / (x2 - x1);
-  let b = z1 - (m*x1);
-
-  return [m,b];
+  // the 'print' button will manually call dicerDraw, f you want to put anything in here
 }
 
 function connectPrinter() {
@@ -283,3 +201,5 @@ function setupUI() {
   bAbsY.mousePressed(function() { bSend('y');});
   bAbsZ.mousePressed(function() { bSend('z');});
 }
+
+function windowResized() { resizeCanvas(windowWidth, windowHeight); }

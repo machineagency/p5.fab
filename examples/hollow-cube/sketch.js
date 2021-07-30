@@ -53,5 +53,5 @@ function dicerDraw() {
 }
 
 function draw() {
-  
+
 }

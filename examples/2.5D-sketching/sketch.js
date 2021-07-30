@@ -24,14 +24,14 @@ function dicerDraw() {
   dicer.autoHome();
   dicer.setNozzleTemp(205); 
   dicer.setBedTemp(60); 
-  // dicer.introLine(0.5);
+  // dicer.introLine(0.3);
   
   // make a spiral!
   let r = 80; // outer radius
   let numSpirals = 8; // how many concentric spirals to make
   let center = createVector(dicer.maxX/2, dicer.maxY/2); // center the spiral on the print bed
-  let z = 0.5;
-  let speed = 300;
+  let z = 0.3;
+  let speed = 300; // move slowly for adhesion
 
 
   for (let angle = 0; angle <= numSpirals * TWO_PI; angle += TWO_PI/100) {

@@ -68,7 +68,6 @@ function dicerDraw() {
   }
   // end artifact
     
-  dicer.render(); // if you want to visualize it
   dicer.presentPart(); // pop the bed out. 
 }
 
