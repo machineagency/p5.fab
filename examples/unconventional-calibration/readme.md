@@ -1,19 +1,26 @@
 # Unconventional Calibration
-We can use the [control panel](../control-panel) to help us print on top of another object. The calibration routine is based off of the process for normal [bed leveling](../bed-level), where you adjust the knobs of the printer bed such that the four corners of the bed paper's width (~0.2mm) from the nozzle. We can use this routine to accomplish tasks that might be difficult using traditional CAD & slicers, like print a handle on a cup. 
+We can use a [control panel](../control-panel) to help us print on top of another object. The calibration routine is based off of the process for normal [bed leveling](../bed-level), where you adjust the knobs of the printer bed such that the four corners of the bed are a paper's width (~0.2mm) from the nozzle. We can use this routine to accomplish tasks that might be difficult using traditional CAD & slicers, like print a handle on a cup. 
 
 ![handle](./assets/handle.jpg)
 
-- First, bring the hotend up from the bed and cool down & clean the nozzle. You don't wan't any molten filament skewing the calibration.
+## Steps:
+- Design your handle. You can also run through this process without change the code, which will produce the handle in the picture above!
 
-- Using a clip or other adhesive, attach the cup to the printer bed. Note that adding another clip might raise other parts of the corners, so be careful of scratching the bed with the nozzle.
+- Home the printer
 
-- We'll choose two points on the cup surface to print in; if we just print on the very top, the surface is flat. Using the control panel, line the nozzle up with the center of the cup. Bring the nozzle down until it's close to the cup; then, using a lower step value (~0.1mm) keep lowering until the nozzle just barely scratches the paper. Enter the coordinates for this value for `x1, y, z1` in the sketch below. 
+- Bring the hotend up from the bed and clean the nozzle. This might involve heating up the nozzle to wipe away bits hardened filament- you don't wan't that molten filament skewing the calibration.
 
-- Repeat for another point on the cup surface.
+- Using a clip or other adhesive, attach the cup to the printer bed. Note that adding another clip might raise other parts of the bed, so be careful of scratching the bed with the nozzle. On the Ender, fasten the cup on the opposite side from the LCD screen to avoid collisions with the clip.
 
-- Design your mug handle in `dicerDraw`
+![clipped-cup](./assets.clipped-cup.png)
 
-- Refresh the page to load in the new code and print!
+- Now we can pick two end points points on the cup for the handle. Make sure the nozzle is cooled down & clean. Using the control panel, line the nozzle up with the center of the cup in the y-direction. Bring the nozzle down until it's close (but not touching) to the cup. Then, holding a piece of paper between the cup and the nozzle, use a lower step value (~0.1mm) to lower the nozzle until it just barely scratches the paper. Click 'Set Point 1' when complete. You should see the rendering update to reflect your chosen point.
+
+- Use the control panel to pick another point, to the right of the first point. Be careful to avoid collisions with the cup.
+
+- Repeat the paper-calibration process for your second point, and click 'Set Point 2' when complete.
+
+- Verify that the rendering looks reasonable, and press print!
 
 Other notes: Careful of collisions! The standard intro line won't work depending on where you attach your cup. In the sketch below, we manually draw our cleaning lines in the back of the build plate. 
 

@@ -20,13 +20,9 @@ function setup() {
 }
 
 function draw() {
-  orbitControl(2, 2, 0.001);
+  orbitControl(2, 2, 0.1);
   background(255);
-  normalMaterial();
-  lights();
-  if (dicer.model) {
-    model(dicer.model);
-  }
+  dicer.render();
 }
 
 function dicerDraw() {

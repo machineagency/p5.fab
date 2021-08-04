@@ -9,12 +9,12 @@ This page has info on how to start using the p5.dicer library in p5.js with high
 ***
 
 ## Physical Setup
-p5.dicer talks to your printer over serial communication. Turn your printer on and connect your Ender to your computer using a microUSB cable next to the input next to the SD card. Since we are streaming the print from the computer, the print will stop if your computer loses power or goes to sleep. I recommend turning your computer's sleep timer off, and keeping your computer powered if running a long print.
+p5.dicer talks to your printer over serial communication. Your Ender will have either a mini or microUSB port next to the SD card slot. Turn your printer on and connect to your computer using the appropriate USB cable. Since we are streaming the print from the computer, the print will stop if your computer loses power or goes to sleep. I recommend turning your computer's sleep timer off, and keeping your computer powered if running a long print.
 
 The following steps also assume that your bed is leveled, and you already have an idea of what temperature settings work well for the filament you're using.
 
 ## p5 Setup
-First, set up a Dicer object. It can optionally take several parameters to accomodate different 3D printers, but the default settings are for an Ender 3 Pro or V2. The WebSerial library requires user input to connect to a serial port, so we also set up buttons to connect to the printer and to start the print.
+First, set up a Dicer object. It can optionally take several parameters to accomodate different 3D printers, but the default settings are for an Ender 3 Pro or V2. The WebSerial library requires user input to connect to a serial port, so we also set up buttons to connect to the printer and to start/stop the print.
 
 ```javascript
 let dicer;

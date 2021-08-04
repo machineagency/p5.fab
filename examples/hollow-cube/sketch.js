@@ -15,6 +15,12 @@ function setup() {
     printButton.mousePressed(function() {
       dicer.print(); // start streaming the commands to printer
     });
+
+    let stopButton = createButton('stop!');
+    stopButton.position(20, 100);
+    stopButton.mousePressed(function() {
+      dicer.stopPrint(); // stop streaming the commands to printer
+    });
 }
 
 function dicerDraw() {
@@ -24,14 +30,14 @@ function dicerDraw() {
   dicer.autoHome();
   dicer.setNozzleTemp(205); // °C - you should use a temperature best suited for your filament!
   dicer.setBedTemp(60); // °C - best temperature for good adhesion/no curling will vary based on filament used!
-  dicer.introLine(); // draw to lines on the left side of the print bed
+  dicer.introLine(1.0); // draw to lines on the left side of the print bed
   
   // variables for our hollow cube!
   let sideLength = 20; //mm
   let x = 100; 
   let y = 100;
   let speed = 300; // mm/min
-  let layerHeight = 0.2; // mm
+  let layerHeight = 0.5; // mm
 
   // design our hollow cube!
   dicer.moveRetract(x, y, layerHeight); // move to the start (x,y,z) position without extruding
@@ -50,8 +56,11 @@ function dicerDraw() {
   }
 
   dicer.presentPart();
+  dicer.render();
 }
 
 function draw() {
-
+  orbitControl(2, 2, 0.1);
+  background(255);
+  dicer.render();
 }

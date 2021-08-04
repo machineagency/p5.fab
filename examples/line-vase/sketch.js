@@ -16,6 +16,12 @@ function setup() {
   printButton.mousePressed(function() {
     dicer.print();
   });
+
+  let stopButton = createButton('stop!');
+    stopButton.position(20, 100);
+    stopButton.mousePressed(function() {
+      dicer.stopPrint(); // stop streaming the commands to printer
+    });
 }
 
 
@@ -42,7 +48,8 @@ function dicerDraw() {
   let sf = 0;
   let maxL = 40;
   let l = 40;
-  for (let h = startHeight; h <= 40+startHeight; h += o) { 
+  dicer.moveRetract(x, y, startHeight); // move to start
+  for (let h = startHeight; h <= l; h += o) { 
     // lines
     dicer.moveExtrude(x + l, y+sf, h, s);
     dicer.moveExtrude(x + l - sf, y + l, h, s);
@@ -57,7 +64,8 @@ function dicerDraw() {
     dicer.moveExtrude(x + l - sf, y + l, h + o, 25, 5);
     dicer.moveRetract(x, y + l - sf, h, 3 * s);
     dicer.moveExtrude(x, y + l - sf, h + o, 25, 5);
-    dicer.move(x + sf, y, h + o, s);
+
+    dicer.moveRetract(x + sf, y, h + o, s);
   }
   // end artifact
 
@@ -65,5 +73,7 @@ function dicerDraw() {
 }
 
 function draw() {
-
+  orbitControl(2, 2, 0.1);
+  background(255);
+  dicer.render();
 }
