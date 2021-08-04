@@ -2,7 +2,7 @@ let dicer;
 let bStep, absX, absY, absZ, curPos;
 
 let p1 = new p5.Vector();
-let p2 = new p5.Vector(50, 0, -)
+let p2 = new p5.Vector(50, 0, 0)
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL).position(0,250);
@@ -31,9 +31,9 @@ function dicerDraw() {
   let s = 300;
   let layerHeight = 0.25;
   
-  const [m,b] = slope(x1, z1, x2, z2);
+  const [m,b] = slope(p1.x, p1.z, p2.x, p2.z);
 
-  dicer.moveRetract(x1, y, z1);
+  dicer.moveRetract(p1.x, y, p1.z);
 
   // print a few base layers 
   for (let h = 0; h < 2; h += layerHeight) {
