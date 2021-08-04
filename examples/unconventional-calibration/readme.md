@@ -12,7 +12,7 @@ We can use a [control panel](../control-panel) to help us print on top of anothe
 
 - Using a clip or other adhesive, attach the cup to the printer bed. Note that adding another clip might raise other parts of the bed, so be careful of scratching the bed with the nozzle. On the Ender, fasten the cup on the opposite side from the LCD screen to avoid collisions with the clip.
 
-![clipped-cup](./assets.clipped-cup.png)
+![clipped-cup](./assets/clipped-cup.png)
 
 - Now we can pick two end points points on the cup for the handle. Make sure the nozzle is cooled down & clean. Using the control panel, line the nozzle up with the center of the cup in the y-direction. Bring the nozzle down until it's close (but not touching) to the cup. Then, holding a piece of paper between the cup and the nozzle, use a lower step value (~0.1mm) to lower the nozzle until it just barely scratches the paper. Click 'Set Point 1' when complete. You should see the rendering update to reflect your chosen point.
 
