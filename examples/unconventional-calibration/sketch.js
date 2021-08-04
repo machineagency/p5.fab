@@ -2,7 +2,7 @@ let dicer;
 let bStep, absX, absY, absZ, curPos;
 
 let p1 = new p5.Vector();
-let p2 = new p5.Vector(100, 0, 0)
+let p2 = new p5.Vector(50, 0, -)
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL).position(0,250);
@@ -19,21 +19,18 @@ function dicerDraw() {
   // custom intro line along the back of build plate
   dicer.moveRetract(50, 200, 100, 1500);
   dicer.setNozzleTemp(205);
-  // dicer.moveRetract(50, 200, 1); // new clips can raise the build plate, so lift up to avoid scratching
-  // dicer.moveExtrude(220, 200, 1);
-  // dicer.moveExtrude(220, 199, 1);
-  // dicer.moveExtrude(50, 199, 1);
-  // dicer.moveRetract(50, 200, 100); //pop up to avoid collisions
+  dicer.moveRetract(50, 200, 1); // new clips can raise the build plate, so lift up to avoid scratching
+  dicer.moveExtrude(220, 200, 1);
+  dicer.moveExtrude(220, 199, 1);
+  dicer.moveExtrude(50, 199, 1);
+  dicer.moveRetract(50, 200, 100); //pop up to avoid collisions
   
   
     // handle
   let y = p1.y;
-  let x1 = p1.x;
-  let z1 = p1.z;
-  let x2 = p2.x;
-  let z2 = p2.z;
   let s = 300;
   let layerHeight = 0.25;
+  
   const [m,b] = slope(x1, z1, x2, z2);
 
   dicer.moveRetract(x1, y, z1);
@@ -57,25 +54,25 @@ function dicerDraw() {
   let z2_ = m * x2_ + b;
 
   for (h = 2; h < 5; h += layerHeight) {
-    dicer.moveExtrude(p1.x, y, p1.x + h, s);
+    dicer.moveExtrude(p1.x, y, p1.z + h, s);
     dicer.moveExtrude(x1_, y, z1_ + h, s);
-    dicer.moveRetract(x2_, y, z2_ + h); // hand hole
+    dicer.moveRetract(x2_, y, z2_ + h); // hole
     dicer.moveExtrude(p2.x, y, p2.z + h, s);
     h += layerHeight;
     dicer.moveExtrude(p2.x, y, p2.z + h, s);
     dicer.moveExtrude(x2_, y, z2_ + h, s); 
-    dicer.moveRetract(x1_, y, z1_ + h); // hand hole
+    dicer.moveRetract(x1_, y, z1_ + h); // hole
     dicer.moveExtrude(p1.x, y, p1.z + h, s);
   }
 
   // top of handle
   for (h = 5; h <= 7; h += layerHeight) {
-    s = (h < 11) ? 1000 : 300; // move quickly over initial gap to avoid sagging
-    dicer.moveExtrude(x1, y, z1 + h, s);
-    dicer.moveExtrude(x2, y, z2 + h, s);
+    s = (h < 6) ? 1000 : 300; // move quickly over initial gap to avoid sagging
+    dicer.moveExtrude(p1.x, y, p1.z + h, s);
+    dicer.moveExtrude(p2.x, y, p2.z + h, s);
     h += layerHeight;
-    dicer.moveExtrude(x2, y, z2 + h, s);
-    dicer.moveExtrude(x1, y, z1 + h, s);
+    dicer.moveExtrude(p2.x, y, p2.z + h, s);
+    dicer.moveExtrude(p1.x, y, p1.z + h, s);
   }
   
     dicer.moveRetract(200, 50, 100);
@@ -135,10 +132,10 @@ function setupUI() {
   bly.position(windowWidth/3, windowHeight/4 - 5*l/4);
   bry.position(windowWidth/3, windowHeight/4 + 5*l/4);
 
-  hZ.position(2*windowWidth/3 + 20, windowHeight/6 - 25);
-  bZhome.position(2 * windowWidth/3, windowHeight/4);
-  buz.position(2*windowWidth/3, windowHeight/4 - 5*l/4);
-  bdz.position(2*windowWidth/3, windowHeight/4 + 5*l/4);
+  hZ.position(windowWidth/2 + 20, windowHeight/6 - 25);
+  bZhome.position(windowWidth/2, windowHeight/4);
+  buz.position(windowWidth/2, windowHeight/4 - 5*l/4);
+  bdz.position(windowWidth/2, windowHeight/4 + 5*l/4);
 
   // left-side panel
   bStep  = createInput('1');
@@ -319,6 +316,7 @@ function setPoint(p) {
     p1 = new p5.Vector(parseInt(pos[4]), parseInt(pos[6]), parseInt(pos[8]));
   }
   else if (p == 'p2') {
+    console.log('p2');
     p2 = new p5.Vector(parseInt(pos[4]), parseInt(pos[6]), parseInt(pos[8]));
   }
   
@@ -328,31 +326,3 @@ function setPoint(p) {
   dicer.parseGcode();
   dicer.isPrinting = b;
 }
-
-// function setP1() {
-//   let pos = curPos.html();
-//   pos = pos.trim().split(/[\s:]/);
-
-//   p1 = new p5.Vector(parseInt(pos[4]), parseInt(pos[6]), parseInt(pos[8]));
-//   console.log(p1);
-
-//   let b = dicer.isPrinting;
-//   dicer.isPrinting = false;
-//   dicerDraw();
-//   dicer.parseGcode();
-//   dicer.isPrinting = b;
-// }
-
-// function setP2() {
-//   let pos = curPos.html();
-//   pos = pos.trim().split(/[\s:]/);
-
-//   p2 = new p5.Vector(parseInt(pos[4]), parseInt(pos[6]), parseInt(pos[8]));
-//   console.log(p2);
-
-//   let b = dicer.isPrinting;
-//   dicer.isPrinting = false;
-//   dicerDraw();
-//   dicer.parseGcode();
-//   dicer.isPrinting = b;
-// }

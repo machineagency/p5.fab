@@ -24,6 +24,12 @@ function setup() {
 
 }
 
+function draw() {
+  orbitControl(2, 2, 0.1);
+  background(255);
+  dicer.render();
+}
+
 function dicerDraw() {
   // setup!
   dicer.setAbsolutePosition(); // set the coordinate system mode
@@ -31,26 +37,19 @@ function dicerDraw() {
   
   dicer.autoHome(); // establish a (0,0,0) 
 
-  dicer.setTemps(205, 60); // (bedTemp, nozzleTemp). hot!
+  // dicer.setTemps(205, 60); // (bedTemp, nozzleTemp). hot!
 
-  dicer.introLine(); // clean the nozzle
+  // dicer.introLine(); // clean the nozzle
 
-  dicer.moveRetract(100, 100, 0.2); // 0.2 is a usual start height
+  // dicer.moveRetract(100, 100, 0.2); // 0.2 is a usual start height
 
-  dicer.moveExtrude(150, 100, 0.2);
-  dicer.moveExtrude(150, 150, 0.2, 300); // sloow
-  dicer.moveExtrude(100, 150, 0.2, 900); // ~ 'normal'
-  dicer.moveExtrude(100, 100, 0.2, 2700); // fast!
+  // dicer.moveExtrude(150, 100, 0.2);
+  // dicer.moveExtrude(150, 150, 0.2, 300); // sloow
+  // dicer.moveExtrude(100, 150, 0.2, 900); // ~ 'normal'
+  // dicer.moveExtrude(100, 100, 0.2, 2700); // fast!
 
-  dicer.presentPart();
+  // dicer.presentPart();
 
 
 }
 
-var once = false;
-function draw() {
-  orbitControl(2, 2, 0.1);
-  background(255);
-
-  dicer.render();
-}
