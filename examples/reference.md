@@ -85,7 +85,7 @@ Takes the coordinate position of the nozzle and returns a calculated amount of f
 
 ### dicer.presentPart()
 
-(I think this is the final presentation of the print) Moves the nozzle to the side and extends the bed out so that a user may take the print.
+Moves the nozzle to the side and extends the bed out so that a user may retrieve the print.
 
 ### dicer.setAbsolutePosition()
 
