@@ -1,5 +1,5 @@
-# p5.dicer
-p5.dicer.js is a p5.js library for 3D printing. It helps you author generative physical artifacts!
+# p5.fav
+p5.fab.js is a p5.js library for 3D printing. It helps you author generative physical artifacts!
 
 To 3D print an object, a canonical workflow starts with designing a CAD model then using a slicer software to generate machine readable G-code. This process abstracts
 away many tedious details, but also requires owning & learning CAD. The p5.dicer library is for users who might appreciate the control offered by direct gcode manipulation. It seeks
