@@ -29,14 +29,14 @@ Other notes: Careful of collisions! The standard intro line won't work depending
 
 
 ```javascript
-let dicer;
+let fab;
 let bStep, absX, absY, absZ, curPos;
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   setupUI();
 
-  dicer = createDicer(); 
+  fab = createFab(); 
 }
 
 function draw() {
@@ -44,24 +44,24 @@ function draw() {
   background(255);
   normalMaterial();
   lights();
-  if (dicer.model) {
-    model(dicer.model);
+  if (fab.model) {
+    model(fab.model);
   }
 
 }
 
-function dicerDraw() {
+function fabDraw() {
   // custom intro line along the back of build plate
-  dicer.setAbsolutePosition();
-  dicer.setAbsolutePosition();
-  dicer.setERelative();
-  dicer.move(50, 200, 100, 1500);
-  dicer.setNozzleTemp(210);
-  dicer.move(50, 200, 1); // new clips can raise the build plate, so lift up to avoid scratching
-  dicer.moveExtrude(220, 200, 1.2);
-  dicer.moveExtrude(220, 199, 1.2);
-  dicer.moveExtrude(50, 199, 1.2);
-  dicer.move(50, 200, 100); //pop up to avoid collisions
+  fab.setAbsolutePosition();
+  fab.setAbsolutePosition();
+  fab.setERelative();
+  fab.move(50, 200, 100, 1500);
+  fab.setNozzleTemp(210);
+  fab.move(50, 200, 1); // new clips can raise the build plate, so lift up to avoid scratching
+  fab.moveExtrude(220, 200, 1.2);
+  fab.moveExtrude(220, 199, 1.2);
+  fab.moveExtrude(50, 199, 1.2);
+  fab.move(50, 200, 100); //pop up to avoid collisions
   
   // handle
  let y = 40;
@@ -73,15 +73,15 @@ function dicerDraw() {
  let layerHeight = 0.25;
  const [m,b] = slope(x1, z1, x2, z2);
 
- dicer.move(x1, y, z1);
+ fab.move(x1, y, z1);
 
 // print a few layers 
 for (let h = 0; h < 2; h += layerHeight) {
-  dicer.moveExtrude(x1, y, z1 + h, s);
-  dicer.moveExtrude(x2, y, z2 + h, s);
+  fab.moveExtrude(x1, y, z1 + h, s);
+  fab.moveExtrude(x2, y, z2 + h, s);
   h += layerHeight;
-  dicer.moveExtrude(x2, y, z2 + h, s);
-  dicer.moveExtrude(x1, y, z1 + h, s);
+  fab.moveExtrude(x2, y, z2 + h, s);
+  fab.moveExtrude(x1, y, z1 + h, s);
 }
 
 // hand hole
@@ -93,30 +93,30 @@ let x2_ = x2 - 10;
 let z2_ = m * x2_ + b;
 
 for (h = 2; h < 10; h += layerHeight) {
-  dicer.moveExtrude(x1, y, z1 + h, s);
-  dicer.moveExtrude(x1_, y, z1_ + h, s);
-  dicer.moveRetract(x2_, y, z2_ + h); // hand hole
-  dicer.moveExtrude(x2, y, z2 + h, s);
+  fab.moveExtrude(x1, y, z1 + h, s);
+  fab.moveExtrude(x1_, y, z1_ + h, s);
+  fab.moveRetract(x2_, y, z2_ + h); // hand hole
+  fab.moveExtrude(x2, y, z2 + h, s);
   h += layerHeight;
-  dicer.moveExtrude(x2, y, z2 + h, s);
-  dicer.moveExtrude(x2_, y, z2_ + h, s); 
-  dicer.moveRetract(x1_, y, z1_ + h); // hand hole
-  dicer.moveExtrude(x1, y, z1 + h, s);
+  fab.moveExtrude(x2, y, z2 + h, s);
+  fab.moveExtrude(x2_, y, z2_ + h, s); 
+  fab.moveRetract(x1_, y, z1_ + h); // hand hole
+  fab.moveExtrude(x1, y, z1 + h, s);
 }
 
 // top of handle
 for (h = 10; h <= 15; h += layerHeight) {
   s = (h < 11) ? 1500 : 300; // move quickly over initial gap to avoid sagging
-  dicer.moveExtrude(x1, y, z1 + h, s);
-  dicer.moveExtrude(x2, y, z2 + h, s);
+  fab.moveExtrude(x1, y, z1 + h, s);
+  fab.moveExtrude(x2, y, z2 + h, s);
   h += layerHeight;
-  dicer.moveExtrude(x2, y, z2 + h, s);
-  dicer.moveExtrude(x1, y, z1 + h, s);
+  fab.moveExtrude(x2, y, z2 + h, s);
+  fab.moveExtrude(x1, y, z1 + h, s);
 }
 
  
-  dicer.moveRetract(200, 50, 100);
-  dicer.print();
+  fab.moveRetract(200, 50, 100);
+  fab.print();
 }
 
 function slope(x1, z1, x2, z2) {
@@ -127,86 +127,86 @@ function slope(x1, z1, x2, z2) {
 }
 
 function connectPrinter() {
-    dicer.serial.requestPort();
+    fab.serial.requestPort();
   }
 
 function bSend(dir) {
-  dicer.commands = [];
+  fab.commands = [];
   let u = bStep.value();
-  dicer.setRelativePosition();
+  fab.setRelativePosition();
   switch(dir) {
     case 'xl':
-      dicer.moveX(-1*u);
-      dicer.print();
+      fab.moveX(-1*u);
+      fab.print();
       break;
 
     case 'xr':
-      dicer.moveX(u);
+      fab.moveX(u);
       break;
 
     case 'yl':
-      dicer.moveY(-1*u);
+      fab.moveY(-1*u);
       break;
     
     case 'yr':
-      dicer.moveY(u);
+      fab.moveY(u);
       break;
 
     case 'u':
-      dicer.moveZ(u);
+      fab.moveZ(u);
       break;
 
     case 'd':
-      dicer.moveZ(-1*u);
+      fab.moveZ(-1*u);
       break;
 
     case 'h':
-      dicer.autoHome();
+      fab.autoHome();
       break;
 
     case 'x':
       u = absX.value();
-      dicer.setAbsolutePosition();
-      dicer.setERelative();
-      dicer.moveX(u);
+      fab.setAbsolutePosition();
+      fab.setERelative();
+      fab.moveX(u);
       break;
     
     case 'y':
       u = absY.value();
-      dicer.setAbsolutePosition();
-      dicer.setERelative();
-      dicer.moveY(u);
+      fab.setAbsolutePosition();
+      fab.setERelative();
+      fab.moveY(u);
       break;
 
     case 'z':
       u  = absZ.value();
-      dicer.setAbsolutePosition();
-      dicer.setERelative();
-      dicer.moveZ(u);
+      fab.setAbsolutePosition();
+      fab.setERelative();
+      fab.moveZ(u);
       break;
     }
       
-  dicer.getPos();
-  dicer.print();
+  fab.getPos();
+  fab.print();
 
- curPos.html(dicer.reportedPos); 
+ curPos.html(fab.reportedPos); 
 }
 
 function heatNozzle() {
-  dicer.commands = [];
-  dicer.setNozzleTemp(200);
-  dicer.print();
+  fab.commands = [];
+  fab.setNozzleTemp(200);
+  fab.print();
 }
 
 function coolNozzle() {
-  dicer.commands = [];
-  dicer.setNozzleTemp(0);
-  dicer.print();
+  fab.commands = [];
+  fab.setNozzleTemp(0);
+  fab.print();
 }
 
 function sendStop() {
-  dicer.stopPrint();
-  dicer.print();
+  fab.stopPrint();
+  fab.print();
 }
 
 function setupUI() {
@@ -298,7 +298,7 @@ function setupUI() {
   let bPrint = createButton('Print!');
   bPrint.addClass('heat-button');
   bPrint.position(80, windowHeight/3 + 80);
-  bPrint.mousePressed(dicerDraw);
+  bPrint.mousePressed(fabDraw);
 
 
   curPos = createElement('text', 'Current Position: N/A');

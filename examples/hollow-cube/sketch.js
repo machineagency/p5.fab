@@ -1,36 +1,36 @@
-let dicer;
+let fab;
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
-    dicer = createDicer();
+    fab = createFab();
   
     let connectButton = createButton('connect!');
     connectButton.position(20, 20);
     connectButton.mousePressed(function() {
-      dicer.serial.requestPort(); // choose the serial port to connect to
+      fab.serial.requestPort(); // choose the serial port to connect to
     });
 
     let printButton = createButton('print!');
     printButton.position(20, 60);
     printButton.mousePressed(function() {
-      dicer.print(); // start streaming the commands to printer
+      fab.print(); // start streaming the commands to printer
     });
 
     let stopButton = createButton('stop!');
     stopButton.position(20, 100);
     stopButton.mousePressed(function() {
-      dicer.stopPrint(); // stop streaming the commands to printer
+      fab.stopPrint(); // stop streaming the commands to printer
     });
 }
 
-function dicerDraw() {
+function fabDraw() {
   // setup!
-  dicer.setAbsolutePosition(); // set all axes (x.y/z/extruder) to absolute
-  dicer.setERelative(); // put extruder in relative mode, independent of other axes
-  dicer.autoHome();
-  dicer.setNozzleTemp(205); // °C - you should use a temperature best suited for your filament!
-  dicer.setBedTemp(60); // °C - best temperature for good adhesion/no curling will vary based on filament used!
-  dicer.introLine(1.0); // draw to lines on the left side of the print bed
+  fab.setAbsolutePosition(); // set all axes (x.y/z/extruder) to absolute
+  fab.setERelative(); // put extruder in relative mode, independent of other axes
+  fab.autoHome();
+  fab.setNozzleTemp(205); // °C - you should use a temperature best suited for your filament!
+  fab.setBedTemp(60); // °C - best temperature for good adhesion/no curling will vary based on filament used!
+  // fab.introLine(1.0); // draw to lines on the left side of the print bed
   
   // variables for our hollow cube!
   let sideLength = 20; //mm
@@ -40,7 +40,7 @@ function dicerDraw() {
   let layerHeight = 0.5; // mm
 
   // design our hollow cube!
-  dicer.moveRetract(x, y, layerHeight); // move to the start (x,y,z) position without extruding
+  fab.moveRetract(x, y, layerHeight); // move to the start (x,y,z) position without extruding
 
   for (let z = layerHeight; z <= sideLength; z += layerHeight) { 
     if (z == layerHeight) { // if it's the first layer
@@ -49,18 +49,18 @@ function dicerDraw() {
     else {
       speed = 1000;
     }
-    dicer.moveExtrude(x + sideLength, y, z, speed); // move along the bottom side while extruding filament
-    dicer.moveExtrude(x + sideLength, y + sideLength, z, speed); // right side
-    dicer.moveExtrude(x, y + sideLength, z, speed); // top side
-    dicer.moveExtrude(x, y, z, speed); //left side
+    fab.moveExtrude(x + sideLength, y, z, speed); // move along the bottom side while extruding filament
+    fab.moveExtrude(x + sideLength, y + sideLength, z, speed); // right side
+    fab.moveExtrude(x, y + sideLength, z, speed); // top side
+    fab.moveExtrude(x, y, z, speed); //left side
   }
 
-  dicer.presentPart();
-  dicer.render();
+  fab.presentPart();
+  fab.render();
 }
 
 function draw() {
   orbitControl(2, 2, 0.1);
   background(255);
-  dicer.render();
+  fab.render();
 }

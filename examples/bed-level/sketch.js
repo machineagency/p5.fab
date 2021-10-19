@@ -1,4 +1,4 @@
-let dicer;
+let fab;
 let buttons;
 let testState = 0;
 let acceptCount = 0;
@@ -13,7 +13,7 @@ let positions = {
 function setup() {
   // createCanvas(400, 400, WEBGL);
 
-  dicer = createDicer();
+  fab = createFab();
 
   // UI things
   let buttonConnect = createButton('connect to printer');
@@ -51,41 +51,41 @@ function gcodeDraw() {
 }
 
 function onData() {
-  dicer.serialResp += dicer.serial.readString();
+  fab.serialResp += fab.serial.readString();
 
-  if (dicer.serialResp.slice(-1) == '\n') {
-    console.log(dicer.serialResp);
-    if (dicer.serialResp.search('ok') > -1) {
-      dicer.emit("ok", dicer);
+  if (fab.serialResp.slice(-1) == '\n') {
+    console.log(fab.serialResp);
+    if (fab.serialResp.search('ok') > -1) {
+      fab.emit("ok", fab);
     }
-    dicer.serialResp = '';
+    fab.serialResp = '';
   }
 }
 
 async function connectToPrinter() {
-    dicer.commands = [];
-    await dicer.serial.requestPort();
+    fab.commands = [];
+    await fab.serial.requestPort();
 }
 
 function heatNozzle() {
-  dicer.autoHome();
-  dicer.move(100, 100, 100, 3000);
-  dicer.setNozzleTemp(200);
-  dicer.print();
+  fab.autoHome();
+  fab.move(100, 100, 100, 3000);
+  fab.setNozzleTemp(200);
+  fab.print();
 }
 
 function coolPrinter() {
-  dicer.setNozzleTemp(0);
-  dicer.autoHome();
+  fab.setNozzleTemp(0);
+  fab.autoHome();
   
-  dicer.print();
+  fab.print();
 }
 
 function paperTestCycle() {
   let p = positions[testState];
-  dicer.up(3);
-  dicer.move(p[0], p[1], p[2], p[3], p[4]);
-  dicer.print();
+  fab.up(3);
+  fab.move(p[0], p[1], p[2], p[3], p[4]);
+  fab.print();
 }
 
 function paperTestAdjusted() {
@@ -110,40 +110,40 @@ function paperTestAccepted() {
 }
 
 function testPrint() {
-  // dicer.commands = [];
-  dicer.setERelative();
-  dicer.autoHome();
-  dicer.setNozzleTemp(210);
-  dicer.setBedTemp(60);
-  dicer.introLine();
-  dicer.move(30,30,0.5);
+  // fab.commands = [];
+  fab.setERelative();
+  fab.autoHome();
+  fab.setNozzleTemp(210);
+  fab.setBedTemp(60);
+  fab.introLine();
+  fab.move(30,30,0.5);
   let o = 10;
   let s = 1000;
   let lx = 0;
   let ly = 0;
   let count = 0;
   for (let i = 0; i < 9; i++){
-    dicer.moveExtrude(200-lx, 30+ly, 0.3);
+    fab.moveExtrude(200-lx, 30+ly, 0.3);
     console.log([200-lx, 30+ly]);
     [count, lx, ly] = checkCount(count, lx, ly);
-    dicer.moveExtrude(200-lx, 200-ly, 0.3);
+    fab.moveExtrude(200-lx, 200-ly, 0.3);
     console.log([200-lx, 200-ly]);
     [count, lx, ly] = checkCount(count, lx, ly);
-    dicer.moveExtrude(30+lx, 200-ly, 0.3);
+    fab.moveExtrude(30+lx, 200-ly, 0.3);
     console.log([30+lx, 200-ly]);
     [count, lx, ly] = checkCount(count, lx, ly);
-    dicer.moveExtrude(30 +lx, 30+ly, 0.3);
+    fab.moveExtrude(30 +lx, 30+ly, 0.3);
     console.log([30+lx, 30+ly]);
     [count, lx, ly] = checkCount(count, lx, ly);
   }
 
-  dicer.up(10);
+  fab.up(10);
 
-  // dicer.move(30, 50, 0.2);
-  // dicer.moveExtrude(200, 50, 0.6);
+  // fab.move(30, 50, 0.2);
+  // fab.moveExtrude(200, 50, 0.6);
 
-  dicer.presentPart();
-  dicer.print();
+  fab.presentPart();
+  fab.print();
 }
 
 function checkCount(count, lx, ly) {

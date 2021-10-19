@@ -1,40 +1,40 @@
-let dicer;
+let fab;
 let printButton;
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
-  dicer = createDicer();
+  fab = createFab();
 
   // add a buttons to connect to the printer & to print!
   connectButton = createButton('connect!');
   connectButton.position(20, 20);
   connectButton.mousePressed(function() {
-    dicer.serial.requestPort();
+    fab.serial.requestPort();
   });
 
   printButton = createButton('print!');
   printButton.position(20, 60);
   printButton.mousePressed(function() {
-    dicer.print();
+    fab.print();
   });
 }
 
 function draw() {
   orbitControl(2, 2, 0.1);
   background(255);
-  dicer.render();
+  fab.render();
 }
 
-function dicerDraw() {
+function fabDraw() {
   // setup printing variables
   // this is a standard setup block:
   let s = 1000; // speed, mm/min
-  dicer.setERelative();
-  dicer.fanOff();
-  dicer.autoHome();
-  dicer.setNozzleTemp(200); // wait for nozzle to heat up
-  dicer.setBedTemp(70); // wait for bed to heat up
-  dicer.introLine(); // line back and forth to clean nozzle
+  fab.setERelative();
+  fab.fanOff();
+  fab.autoHome();
+  fab.setNozzleTemp(200); // wait for nozzle to heat up
+  fab.setBedTemp(70); // wait for bed to heat up
+  fab.introLine(); // line back and forth to clean nozzle
     
   // design your artifact here!
   // here's a vase example
@@ -59,12 +59,12 @@ function dicerDraw() {
     for (let t = 0; t < TWO_PI; t += step) {
       let x = r * cos(t) + 100;
       let y = r * sin(t) + 100;
-      dicer.moveExtrude(x, y, z, s);
+      fab.moveExtrude(x, y, z, s);
     }
   }
   // end artifact
     
-  dicer.presentPart(); // pop the bed out. 
+  fab.presentPart(); // pop the bed out. 
 }
 
   // line vase
@@ -77,20 +77,20 @@ function dicerDraw() {
   // let l = 40;
   // for (let h = startHeight; h <= 40+startHeight; h += o) { //o=2, s=1500 works well here
   //   // lines
-  //   dicer.moveExtrude(x + l, y+sf, h, s);
-  //   dicer.moveExtrude(x + l - sf, y + l, h, s);
-  //   dicer.moveExtrude(x, y + l - sf, h, s);
-  //   dicer.moveExtrude(x + sf, y, h, s);
+  //   fab.moveExtrude(x + l, y+sf, h, s);
+  //   fab.moveExtrude(x + l - sf, y + l, h, s);
+  //   fab.moveExtrude(x, y + l - sf, h, s);
+  //   fab.moveExtrude(x + sf, y, h, s);
 
   //   // dots
-  //   dicer.moveExtrude(x + sf, y, h + o, 25, 5);
-  //   dicer.moveRetract(x + l, y + sf, h, 3 * s);
-  //   dicer.moveExtrude(x + l, y + sf, h + o, 25, 5);
-  //   dicer.moveRetract(x + l - sf, y + l, h, 3 * s);
-  //   dicer.moveExtrude(x + l - sf, y + l, h + o, 25, 5);
-  //   dicer.moveRetract(x, y + l - sf, h, 3 * s);
-  //   dicer.moveExtrude(x, y + l - sf, h + o, 25, 5);
-  //   dicer.move(x + sf, y, h + o, s);
+  //   fab.moveExtrude(x + sf, y, h + o, 25, 5);
+  //   fab.moveRetract(x + l, y + sf, h, 3 * s);
+  //   fab.moveExtrude(x + l, y + sf, h + o, 25, 5);
+  //   fab.moveRetract(x + l - sf, y + l, h, 3 * s);
+  //   fab.moveExtrude(x + l - sf, y + l, h + o, 25, 5);
+  //   fab.moveRetract(x, y + l - sf, h, 3 * s);
+  //   fab.moveExtrude(x, y + l - sf, h + o, 25, 5);
+  //   fab.move(x + sf, y, h + o, s);
 
   //   // sf += map(l, 0, 40, 0, 0.5);
   //   // l-=0.5;

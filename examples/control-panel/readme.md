@@ -4,98 +4,98 @@ In this example, we set up a simple UI to control the printer from. With the cus
 This can be incorporated into a larger workflow or routine, as in the [unconventional calibration example](../unconventional-calibration).
 
 ```javascript
-let dicer;
+let fab;
 let bStep, absX, absY, absZ, curPos;
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   setupUI();
 
-  dicer = createDicer(); 
+  fab = createFab(); 
 }
 
-function dicerDraw() {
-  // the 'print' button will manually call dicerDraw, if you want to put anything in here
+function fabDraw() {
+  // the 'print' button will manually call fabDraw, if you want to put anything in here
 }
 
 function connectPrinter() {
-    dicer.serial.requestPort();
+    fab.serial.requestPort();
   }
 
 function bSend(dir) {
   let u = bStep.value();
-  dicer.setRelativePosition();
+  fab.setRelativePosition();
   switch(dir) {
     case 'xl':
-      dicer.moveX(-1*u);
-      dicer.print();
+      fab.moveX(-1*u);
+      fab.print();
       break;
 
     case 'xr':
-      dicer.moveX(u);
+      fab.moveX(u);
       break;
 
     case 'yl':
-      dicer.moveY(-1*u);
+      fab.moveY(-1*u);
       break;
     
     case 'yr':
-      dicer.moveY(u);
+      fab.moveY(u);
       break;
 
     case 'u':
-      dicer.moveZ(u);
+      fab.moveZ(u);
       break;
 
     case 'd':
-      dicer.moveZ(-1*u);
+      fab.moveZ(-1*u);
       break;
 
     case 'h':
-      dicer.autoHome();
+      fab.autoHome();
       break;
 
     case 'x':
       u = absX.value();
-      dicer.setAbsolutePosition();
-      dicer.setERelative();
-      dicer.moveX(u);
+      fab.setAbsolutePosition();
+      fab.setERelative();
+      fab.moveX(u);
       break;
     
     case 'y':
       u = absY.value();
-      dicer.setAbsolutePosition();
-      dicer.setERelative();
-      dicer.moveY(u);
+      fab.setAbsolutePosition();
+      fab.setERelative();
+      fab.moveY(u);
       break;
 
     case 'z':
       u  = absZ.value();
-      dicer.setAbsolutePosition();
-      dicer.setERelative();
-      dicer.moveZ(u);
+      fab.setAbsolutePosition();
+      fab.setERelative();
+      fab.moveZ(u);
       break;
     }
       
-  dicer.getPos();
-  dicer.print();
+  fab.getPos();
+  fab.print();
 
- curPos.html(dicer.reportedPos); 
+ curPos.html(fab.reportedPos); 
 }
 
 function heatNozzle() {
-  dicer.setNozzleTemp(200);
-  dicer.print();
+  fab.setNozzleTemp(200);
+  fab.print();
 }
 
 function coolNozzle() {
-  dicer.setNozzleTemp(0);
-  dicer.print();
+  fab.setNozzleTemp(0);
+  fab.print();
 }
 
 function sendStop() {
-  dicer.stopPrint();
-  dicer.print();
+  fab.stopPrint();
+  fab.print();
 }
 
 function setupUI() {
@@ -191,7 +191,7 @@ function setupUI() {
   let bPrint = createButton('Print!');
   bPrint.addClass('heat-button');
   bPrint.position(80, windowHeight/3 + 80);
-  bPrint.mousePressed(dicerDraw);
+  bPrint.mousePressed(fabDraw);
 
 
   curPos = createElement('text', 'Current Position: N/A');

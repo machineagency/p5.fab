@@ -1,5 +1,5 @@
 # Getting Started!
-This page has info on how to start using the p5.dicer library in p5.js with high level info on how the library works.
+This page has info on how to start using the p5.fab library in p5.js with high level info on how the library works.
 
 **Note 1:** This library relies on WebSerial support, and therefore is only supported on Chrome at this time. More options are in progress, but for now, *use Chrome!* 
 
@@ -9,30 +9,30 @@ This page has info on how to start using the p5.dicer library in p5.js with high
 ***
 
 ## Physical Setup
-p5.dicer talks to your printer over serial communication. Your Ender will have either a mini or microUSB port next to the SD card slot. Turn your printer on and connect to your computer using the appropriate USB cable. Since we are streaming the print from the computer, the print will stop if your computer loses power or goes to sleep. I recommend turning your computer's sleep timer off, and keeping your computer powered if running a long print.
+p5.fab talks to your printer over serial communication. Your Ender will have either a mini or microUSB port next to the SD card slot. Turn your printer on and connect to your computer using the appropriate USB cable. Since we are streaming the print from the computer, the print will stop if your computer loses power or goes to sleep. I recommend turning your computer's sleep timer off, and keeping your computer powered if running a long print.
 
 The following steps also assume that your bed is leveled, and you already have an idea of what temperature settings work well for the filament you're using.
 
 ## p5 Setup
-First, set up a Dicer object. It can optionally take several parameters to accomodate different 3D printers, but the default settings are for an Ender 3 Pro or V2. The WebSerial library requires user input to connect to a serial port, so we also set up buttons to connect to the printer and to start/stop the print.
+First, set up a fab object. It can optionally take several parameters to accomodate different 3D printers, but the default settings are for an Ender 3 Pro or V2. The WebSerial library requires user input to connect to a serial port, so we also set up buttons to connect to the printer and to start/stop the print.
 
 ```javascript
-let dicer;
+let fab;
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
-    dicer = createDicer();
+    fab = createFab();
 
     let connectButton = createButton('connect!');
     connectButton.position(20, 20);
     connectButton.mousePressed(function() {
-      dicer.serial.requestPort(); // choose the serial port to connect to
+      fab.serial.requestPort(); // choose the serial port to connect to
     });
 
     let printButton = createButton('print!');
     printButton.position(20, 60);
     printButton.mousePressed(function() {
-      dicer.print(); // start streaming the commands to printer
+      fab.print(); // start streaming the commands to printer
     });
 }
 
@@ -41,14 +41,14 @@ function draw() {
 }
 ```
 
-Save the sketch and try clicking the connect button. You should receive a prompt which includes a serial port to open. By default, Dicer will remember the port you have access to and try to connect to it automatically across refreshes. If you always want to start your print immediately, you can omit the print button and instead enable `printOnOpen()`, which will send the print as soon as Dicer has connected to a serial port. 
+Save the sketch and try clicking the connect button. You should receive a prompt which includes a serial port to open. By default, fab will remember the port you have access to and try to connect to it automatically across refreshes. If you always want to start your print immediately, you can omit the print button and instead enable `printOnOpen()`, which will send the print as soon as fab has connected to a serial port. 
 
-In addition to `setup()` and `draw()`, p5.dicer introudes `dicerDraw()` which runs immediately after `setup` completes and before the first call calll to `draw`. This is where you can author your artifacts! The first thing to do in `dicerDraw` is set up some print settings. A standard way to start is to set the coordinate modes of the printer. In absolute mode, all coordinates will be interpreted as positions in the printer's coordinate space; in relative mode, coordinates are interpreted as relative to the last position. To avoid damaging your printer, it's a good idea to explicitly set your mode:
+In addition to `setup()` and `draw()`, p5.fab introudes `fabDraw()` which runs immediately after `setup` completes and before the first call calll to `draw`. This is where you can author your artifacts! The first thing to do in `fabDraw` is set up some print settings. A standard way to start is to set the coordinate modes of the printer. In absolute mode, all coordinates will be interpreted as positions in the printer's coordinate space; in relative mode, coordinates are interpreted as relative to the last position. To avoid damaging your printer, it's a good idea to explicitly set your mode:
 
 ```javascript
-function dicerDraw() {
-  dicer.setAbsolutePosition(); // set all axes (x/y/z/extruder) to absolute
-  dicer.setERelative(); // put extruder in relative mode, independent of other axes
+function fabDraw() {
+  fab.setAbsolutePosition(); // set all axes (x/y/z/extruder) to absolute
+  fab.setERelative(); // put extruder in relative mode, independent of other axes
 }
 ```
 
@@ -57,15 +57,15 @@ Here, we first put the printer in absolute mode. However, it's easier to work wi
 Now we've set absolute mode, but we don't have a good origin yet. The first movement for your printer should be to home the printhead to establish the coordinate system.
 
 ```javascript
-dicer.autoHome();
+fab.autoHome();
 ```
 
 Next, we can make our first extrusion! It's standard to print an intro line to clean the nozle before moving on to printing your object. We can do this by bringing our nozzle and bed up to temp, and then using the `introLine()` method.
 
 ```javascript
-dicer.setNozzleTemp(200); // °C - you should use a temperature best suited for your filament!
-dicer.setBedTemp(55); // °C - best temperature for good adhesion/no curling will vary based on filament used!
-dicer.introLine(); // draw to lines on the left side of the print bed
+fab.setNozzleTemp(200); // °C - you should use a temperature best suited for your filament!
+fab.setBedTemp(55); // °C - best temperature for good adhesion/no curling will vary based on filament used!
+fab.introLine(); // draw to lines on the left side of the print bed
 ```
 
 If you run this sketch and press the *print* button, you should see your printer home, pause as the nozzle and bed come up to temperature, and then print your intro line! Next, let's try to print a hollow cube. We can start by setting up some printing variables. Much like drawing lines to the p5 canvas, we can set up variables to print a cube with 20mm long sides with the bottom-left corner at the position (100,100) of the printer bed:
@@ -82,13 +82,13 @@ Where `speed` defines how fast the toolhead will move from position to position 
 cube using different `move` commands:
 
 ```javascript
-dicer.moveRetract(x, y, layerHeight); // move to the start (x,y,z) position without extruding
+fab.moveRetract(x, y, layerHeight); // move to the start (x,y,z) position without extruding
 
 for (let z = layerHeight; z <= sideLength; z += layerHeight) { 
-  dicer.moveExtrude(x + sideLength, y, z, speed); // move along the bottom side while extruding filament
-  dicer.moveExtrude(x + sideLength, y + sideLength, z, speed); // right side
-  dicer.moveExtrude(x, y + sideLength, z, speed); // top side
-  dicer.moveExtrude(x, y, z, speed); //left side
+  fab.moveExtrude(x + sideLength, y, z, speed); // move along the bottom side while extruding filament
+  fab.moveExtrude(x + sideLength, y + sideLength, z, speed); // right side
+  fab.moveExtrude(x, y + sideLength, z, speed); // top side
+  fab.moveExtrude(x, y, z, speed); //left side
 }
 ```
 
@@ -103,17 +103,17 @@ for (let z = layerHeight; z <= sideLength; z += layerHeight) {
     speed = 1000; // on subsequent layers, speed things up!
   }
 
-  dicer.moveExtrude(x + sideLength, y, z, speed); // move along the bottom side while extruding filament
-  dicer.moveExtrude(x + sideLength, y + sideLength, z, speed); // right side
-  dicer.moveExtrude(x, y + sideLength, z, speed); // top side
-  dicer.moveExtrude(x, y, z, speed); //left side
+  fab.moveExtrude(x + sideLength, y, z, speed); // move along the bottom side while extruding filament
+  fab.moveExtrude(x + sideLength, y + sideLength, z, speed); // right side
+  fab.moveExtrude(x, y + sideLength, z, speed); // top side
+  fab.moveExtrude(x, y, z, speed); //left side
 }
 ```
 
 Now the print head will move slower on the first layer for better adhesion! This loop will print a 20mm hollow box, but once it finishes it will be hard to take the cube of the print bed with the nozzle still in the way! We can add the following line to send the hotend to the back left of the printer:
 
 ```javascript
-dicer.presentPart();
+fab.presentPart();
 ```
 
 In other scenarios, you might want to manually move the printhead out of the way to avoid collisions. 

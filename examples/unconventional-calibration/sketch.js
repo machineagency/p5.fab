@@ -1,4 +1,4 @@
-let dicer;
+let fab;
 let bStep, absX, absY, absZ, curPos;
 
 let p1 = new p5.Vector();
@@ -8,22 +8,22 @@ function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL).position(0,250);
   setupUI();
 
-  dicer = createDicer(); 
+  fab = createFab(); 
 }
 
-function dicerDraw() {
-  dicer.commands = [];
-  dicer.setAbsolutePosition();
-  dicer.setERelative();
+function fabDraw() {
+  fab.commands = [];
+  fab.setAbsolutePosition();
+  fab.setERelative();
 
   // custom intro line along the back of build plate
-  dicer.moveRetract(50, 200, 100, 1500);
-  dicer.setNozzleTemp(205);
-  dicer.moveRetract(50, 200, 1); // new clips can raise the build plate, so lift up to avoid scratching
-  dicer.moveExtrude(220, 200, 1);
-  dicer.moveExtrude(220, 199, 1);
-  dicer.moveExtrude(50, 199, 1);
-  dicer.moveRetract(50, 200, 100); //pop up to avoid collisions
+  fab.moveRetract(50, 200, 100, 1500);
+  fab.setNozzleTemp(205);
+  fab.moveRetract(50, 200, 1); // new clips can raise the build plate, so lift up to avoid scratching
+  fab.moveExtrude(220, 200, 1);
+  fab.moveExtrude(220, 199, 1);
+  fab.moveExtrude(50, 199, 1);
+  fab.moveRetract(50, 200, 100); //pop up to avoid collisions
   
   
     // handle
@@ -33,15 +33,15 @@ function dicerDraw() {
   
   const [m,b] = slope(p1.x, p1.z, p2.x, p2.z);
 
-  dicer.moveRetract(p1.x, y, p1.z);
+  fab.moveRetract(p1.x, y, p1.z);
 
   // print a few base layers 
   for (let h = 0; h < 2; h += layerHeight) {
-    dicer.moveExtrude(p1.x, y, p1.z + h, s);
-    dicer.moveExtrude(p2.x, y, p2.z + h, s);
+    fab.moveExtrude(p1.x, y, p1.z + h, s);
+    fab.moveExtrude(p2.x, y, p2.z + h, s);
     h += layerHeight;
-    dicer.moveExtrude(p2.x, y,p2.z + h, s);
-    dicer.moveExtrude(p1.x, y, p1.z + h, s);
+    fab.moveExtrude(p2.x, y,p2.z + h, s);
+    fab.moveExtrude(p1.x, y, p1.z + h, s);
   }
 
   // hand hole
@@ -54,28 +54,28 @@ function dicerDraw() {
   let z2_ = m * x2_ + b;
 
   for (h = 2; h < 5; h += layerHeight) {
-    dicer.moveExtrude(p1.x, y, p1.z + h, s);
-    dicer.moveExtrude(x1_, y, z1_ + h, s);
-    dicer.moveRetract(x2_, y, z2_ + h); // hole
-    dicer.moveExtrude(p2.x, y, p2.z + h, s);
+    fab.moveExtrude(p1.x, y, p1.z + h, s);
+    fab.moveExtrude(x1_, y, z1_ + h, s);
+    fab.moveRetract(x2_, y, z2_ + h); // hole
+    fab.moveExtrude(p2.x, y, p2.z + h, s);
     h += layerHeight;
-    dicer.moveExtrude(p2.x, y, p2.z + h, s);
-    dicer.moveExtrude(x2_, y, z2_ + h, s); 
-    dicer.moveRetract(x1_, y, z1_ + h); // hole
-    dicer.moveExtrude(p1.x, y, p1.z + h, s);
+    fab.moveExtrude(p2.x, y, p2.z + h, s);
+    fab.moveExtrude(x2_, y, z2_ + h, s); 
+    fab.moveRetract(x1_, y, z1_ + h); // hole
+    fab.moveExtrude(p1.x, y, p1.z + h, s);
   }
 
   // top of handle
   for (h = 5; h <= 7; h += layerHeight) {
     s = (h < 6) ? 1000 : 300; // move quickly over initial gap to avoid sagging
-    dicer.moveExtrude(p1.x, y, p1.z + h, s);
-    dicer.moveExtrude(p2.x, y, p2.z + h, s);
+    fab.moveExtrude(p1.x, y, p1.z + h, s);
+    fab.moveExtrude(p2.x, y, p2.z + h, s);
     h += layerHeight;
-    dicer.moveExtrude(p2.x, y, p2.z + h, s);
-    dicer.moveExtrude(p1.x, y, p1.z + h, s);
+    fab.moveExtrude(p2.x, y, p2.z + h, s);
+    fab.moveExtrude(p1.x, y, p1.z + h, s);
   }
   
-    dicer.moveRetract(200, 50, 100);
+    fab.moveRetract(200, 50, 100);
 }
 
 function slope(x1, z1, x2, z2) {
@@ -87,9 +87,9 @@ function slope(x1, z1, x2, z2) {
 function draw() {
   orbitControl(2, 2, 0.1);
   background(255);
-  dicer.render();
+  fab.render();
   
-  curPos.html("Current Position: " + dicer.reportedPos);
+  curPos.html("Current Position: " + fab.reportedPos);
 
 }
 
@@ -191,8 +191,8 @@ function setupUI() {
   bPrint.addClass('heat-button');
   bPrint.position(150, windowHeight/3 - 20);
   bPrint.mousePressed(function() {
-    dicerDraw();
-    dicer.print();
+    fabDraw();
+    fab.print();
   });
 
   let bSetP1 = createButton('Set Point 1');
@@ -226,86 +226,86 @@ function setupUI() {
 
 
 function connectPrinter() {
-    dicer.serial.requestPort();
+    fab.serial.requestPort();
   }
 
 function bSend(dir) {
-  dicer.commands = [];
+  fab.commands = [];
   let u = bStep.value();
-  dicer.setRelativePosition();
+  fab.setRelativePosition();
   switch(dir) {
     case 'xl':
-      dicer.moveX(-1*u);
-      dicer.print();
+      fab.moveX(-1*u);
+      fab.print();
       break;
 
     case 'xr':
-      dicer.moveX(u);
+      fab.moveX(u);
       break;
 
     case 'yl':
-      dicer.moveY(-1*u);
+      fab.moveY(-1*u);
       break;
     
     case 'yr':
-      dicer.moveY(u);
+      fab.moveY(u);
       break;
 
     case 'u':
-      dicer.moveZ(u);
+      fab.moveZ(u);
       break;
 
     case 'd':
-      dicer.moveZ(-1*u);
+      fab.moveZ(-1*u);
       break;
 
     case 'h':
-      dicer.autoHome();
+      fab.autoHome();
       break;
 
     case 'x':
       u = absX.value();
-      dicer.setAbsolutePosition();
-      dicer.setERelative();
-      dicer.moveX(u);
+      fab.setAbsolutePosition();
+      fab.setERelative();
+      fab.moveX(u);
       break;
     
     case 'y':
       u = absY.value();
-      dicer.setAbsolutePosition();
-      dicer.setERelative();
-      dicer.moveY(u);
+      fab.setAbsolutePosition();
+      fab.setERelative();
+      fab.moveY(u);
       break;
 
     case 'z':
       u  = absZ.value();
-      dicer.setAbsolutePosition();
-      dicer.setERelative();
-      dicer.moveZ(u);
+      fab.setAbsolutePosition();
+      fab.setERelative();
+      fab.moveZ(u);
       break;
     }
       
-  dicer.getPos();
-  dicer.print();
+  fab.getPos();
+  fab.print();
 
- curPos.html(dicer.reportedPos); 
+ curPos.html(fab.reportedPos); 
 }
 
 function heatNozzle() {
-  dicer.commands = [];
-  dicer.setNozzleTemp(200);
-  dicer.print();
+  fab.commands = [];
+  fab.setNozzleTemp(200);
+  fab.print();
 }
 
 function coolNozzle() {
-  dicer.commands = [];
-  dicer.setNozzleTemp(0);
-  dicer.print();
+  fab.commands = [];
+  fab.setNozzleTemp(0);
+  fab.print();
 }
 
 function sendStop() {
-  dicer.stopPrint();
-  dicer.print();
+  fab.stopPrint();
+  fab.print();
 }
 
 function setPoint(p) {
@@ -320,9 +320,9 @@ function setPoint(p) {
     p2 = new p5.Vector(parseInt(pos[4]), parseInt(pos[6]), parseInt(pos[8]));
   }
   
-  let b = dicer.isPrinting;
-  dicer.isPrinting = false;
-  dicerDraw();
-  dicer.parseGcode();
-  dicer.isPrinting = b;
+  let b = fab.isPrinting;
+  fab.isPrinting = false;
+  fabDraw();
+  fab.parseGcode();
+  fab.isPrinting = b;
 }

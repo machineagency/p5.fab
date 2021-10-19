@@ -6,36 +6,36 @@ The exact values used below might need to be tuned depending on your machine & f
 ![vase](./assets/vase.png)
 
 ```javascript
-let dicer;
+let fab;
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
-  dicer = createDicer();
+  fab = createFab();
 
   // add a buttons to connect to the printer & to print!
   let connectButton = createButton('connect!');
   connectButton.position(20, 20);
   connectButton.mousePressed(function() {
-    dicer.serial.requestPort();
+    fab.serial.requestPort();
   });
 
   let printButton = createButton('print!');
   printButton.position(20, 60);
   printButton.mousePressed(function() {
-    dicer.print();
+    fab.print();
   });
 }
 
 
-function dicerDraw() {
+function fabDraw() {
   // setup printing variables
   // this is a standard setup block:
-  dicer.setERelative();
-  dicer.fanOff();
-  dicer.autoHome();
-  dicer.setNozzleTemp(205); // wait for nozzle to heat up
-  dicer.setBedTemp(70); // wait for bed to heat up
-  dicer.introLine(); // line back and forth to clean nozzle
+  fab.setERelative();
+  fab.fanOff();
+  fab.autoHome();
+  fab.setNozzleTemp(205); // wait for nozzle to heat up
+  fab.setBedTemp(70); // wait for bed to heat up
+  fab.introLine(); // line back and forth to clean nozzle
     
   /* design your artifact here!
    *  here's a vase line vase, based on LIA's 'Filament Sculptures' 
@@ -52,24 +52,24 @@ function dicerDraw() {
   let l = 40;
   for (let h = startHeight; h <= 40+startHeight; h += o) { 
     // lines
-    dicer.moveExtrude(x + l, y+sf, h, s);
-    dicer.moveExtrude(x + l - sf, y + l, h, s);
-    dicer.moveExtrude(x, y + l - sf, h, s);
-    dicer.moveExtrude(x + sf, y, h, s);
+    fab.moveExtrude(x + l, y+sf, h, s);
+    fab.moveExtrude(x + l - sf, y + l, h, s);
+    fab.moveExtrude(x, y + l - sf, h, s);
+    fab.moveExtrude(x + sf, y, h, s);
 
     // dots
-    dicer.moveExtrude(x, y, h + o, 25, 5); // move slowly and extrude lots of filament on the dots
-    dicer.moveRetract(x + l, y, h, 3 * s); // move quickly from point to point to reduce stringing
-    dicer.moveExtrude(x + l, y, h + o, 25, 5);
-    dicer.moveRetract(x + l - sf, y + l, h, 3 * s);
-    dicer.moveExtrude(x + l - sf, y + l, h + o, 25, 5);
-    dicer.moveRetract(x, y + l - sf, h, 3 * s);
-    dicer.moveExtrude(x, y + l - sf, h + o, 25, 5);
-    dicer.move(x + sf, y, h + o, s);
+    fab.moveExtrude(x, y, h + o, 25, 5); // move slowly and extrude lots of filament on the dots
+    fab.moveRetract(x + l, y, h, 3 * s); // move quickly from point to point to reduce stringing
+    fab.moveExtrude(x + l, y, h + o, 25, 5);
+    fab.moveRetract(x + l - sf, y + l, h, 3 * s);
+    fab.moveExtrude(x + l - sf, y + l, h + o, 25, 5);
+    fab.moveRetract(x, y + l - sf, h, 3 * s);
+    fab.moveExtrude(x, y + l - sf, h + o, 25, 5);
+    fab.move(x + sf, y, h + o, s);
   }
   // end artifact
 
-  dicer.presentPart(); // pop the bed out. 
+  fab.presentPart(); // pop the bed out. 
 }
 
 function draw() {
