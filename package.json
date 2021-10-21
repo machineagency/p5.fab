@@ -1,0 +1,32 @@
+{
+  "name": "p5-fab",
+  "version": "1.0.0",
+  "description": "a p5js library for digital fabrication!",
+  "main": "lib/p5.fab.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/machineagency/p5.fab.git"
+  },
+  "keywords": [
+    "p5",
+    "p5js",
+    "processing",
+    "digital",
+    "fabrication",
+    "digifab"
+  ],
+  "author": "Blair Subbaraman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/machineagency/p5.fab/issues"
+  },
+  "homepage": "https://github.com/machineagency/p5.fab#readme"
+}
