@@ -30,24 +30,24 @@ function fabDraw() {
   fab.autoHome();
   fab.setNozzleTemp(205); // °C - you should use a temperature best suited for your filament!
   fab.setBedTemp(60); // °C - best temperature for good adhesion/no curling will vary based on filament used!
-  // fab.introLine(1.0); // draw to lines on the left side of the print bed
+  fab.introLine(0.2); // draw to lines on the left side of the print bed
   
   // variables for our hollow cube!
   let sideLength = 20; //mm
   let x = 100; 
   let y = 100;
-  let speed = 300; // mm/min
-  let layerHeight = 0.5; // mm
+  let speed = 10; // mm/sec
+  let layerHeight = 0.2; // mm
 
   // design our hollow cube!
   fab.moveRetract(x, y, layerHeight); // move to the start (x,y,z) position without extruding
 
   for (let z = layerHeight; z <= sideLength; z += layerHeight) { 
     if (z == layerHeight) { // if it's the first layer
-    speed = 300; // slow print speeed down for the first layer
+    speed = 10; // slow print speeed down for the first layer
     }
     else {
-      speed = 1000;
+      speed = 25;
     }
     fab.moveExtrude(x + sideLength, y, z, speed); // move along the bottom side while extruding filament
     fab.moveExtrude(x + sideLength, y + sideLength, z, speed); // right side

@@ -37,7 +37,7 @@ function fabDraw() {
   let center = createVector(fab.maxX/2, fab.maxY/2); // center the spiral on the print bed
   let z = 0.2;
   let step = TWO_PI/100;
-  let speed = 500; // move slowly for adhesion
+  let speed = 20; // move slowly for adhesion
 
 
   for (let angle = 0; angle <= numSpirals * TWO_PI; angle += step) {

@@ -28,7 +28,7 @@ function draw() {
 function fabDraw() {
   // setup printing variables
   // this is a standard setup block:
-  let s = 1000; // speed, mm/min
+  let s = 25; // speed, mm/min
   fab.setERelative();
   fab.fanOff();
   fab.autoHome();

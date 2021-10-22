@@ -24,32 +24,34 @@ function setup() {
 
 }
 
-function draw() {
-  orbitControl(2, 2, 0.1);
-  background(255);
-  fab.render();
-}
 
 function fabDraw() {
   // setup!
   fab.setAbsolutePosition(); // set the coordinate system mode
   fab.setERelative(); // it's easier to work with the extruder axis in relative positioning
   
-  fab.autoHome(); // establish a (0,0,0) 
+  fab.autoHome(); // establish a (0,0,0)
+  fab.setTemps(200, 60); // (bedTemp, nozzleTemp). hot! 
 
-  // fab.setTemps(205, 60); // (bedTemp, nozzleTemp). hot!
+  fab.introLine(); // clean the nozzle
 
-  // fab.introLine(); // clean the nozzle
+  fab.moveRetract(100, 100, 0.2); // moveRetract will move the nozzle without extruding filament
+                                  // it's good for getting to your start location!
 
-  // fab.moveRetract(100, 100, 0.2); // 0.2 is a usual start height
+  // first steps: extruding filament!
+  fab.moveExtrude(150, 100, 0.2); // a default speed of 25 mm/s is used, 
+                                  // along with a reasonable amount of filament
+  fab.moveExtrude(150, 150, 0.2, 10); // sloow
+  fab.moveExtrude(100, 150, 0.2, 25); // 'normal'
+  fab.moveExtrude(100, 100, 0.2, 80); // fast!
+  
+  fab.moveExtrude(100, 100, 1, 0.5, 5); // we can also explicitly set the amount of filament to extrude
 
-  // fab.moveExtrude(150, 100, 0.2);
-  // fab.moveExtrude(150, 150, 0.2, 300); // sloow
-  // fab.moveExtrude(100, 150, 0.2, 900); // ~ 'normal'
-  // fab.moveExtrude(100, 100, 0.2, 2700); // fast!
-
-  // fab.presentPart();
-
-
+  fab.presentPart(); // pull the nozzle away, and retract a bit of filament to stop oozing!
+}
+function draw() {
+  orbitControl(2, 2, 0.1);
+  background(255);
+  fab.render();
 }
 

@@ -42,7 +42,7 @@ function fabDraw() {
 
   let startHeight = 0.2;
   let o = 2;
-  let s = 2500;
+  let s = 40;
   let x = 100;
   let y = 100;
   let sf = 0;
@@ -57,13 +57,13 @@ function fabDraw() {
     fab.moveExtrude(x + sf, y, h, s);
 
     // dots
-    fab.moveExtrude(x, y, h + o, 25, 5); // move slowly and extrude lots of filament on the dots
+    fab.moveExtrude(x, y, h + o, 0.4, 5); // move slowly and extrude lots of filament on the dots
     fab.moveRetract(x + l, y, h, 3 * s); // move quickly from point to point to reduce stringing
-    fab.moveExtrude(x + l, y, h + o, 25, 5);
+    fab.moveExtrude(x + l, y, h + o, 0.4, 5);
     fab.moveRetract(x + l - sf, y + l, h, 3 * s);
-    fab.moveExtrude(x + l - sf, y + l, h + o, 25, 5);
+    fab.moveExtrude(x + l - sf, y + l, h + o, 0.4, 5);
     fab.moveRetract(x, y + l - sf, h, 3 * s);
-    fab.moveExtrude(x, y + l - sf, h + o, 25, 5);
+    fab.moveExtrude(x, y + l - sf, h + o, 0.4, 5);
 
     fab.moveRetract(x + sf, y, h + o, s);
   }
