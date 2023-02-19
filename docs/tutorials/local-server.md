@@ -5,6 +5,6 @@ Some p5 functionality - like the serial communication that this library relies o
 - Add the [Web Server for Chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb) extension
 - Got to `chrome://apps` and then click the Web Server for Chrome icon
 - Choose the folder to launch the server from. If you're taking a look at the examples in this repo, choose the `p5.fab` folder.
-- Toggle the start switch to 'on', and navigate to `http://127.0.0.1:8887`. You should be ready to go!
+- Toggle the start switch to 'on', and navigate to `http://127.0.0.1:8887/editor`. You should be ready to go!
 
-*The info on this page largely comes from the [p5.js doc](https://github.com/processing/p5.js/wiki/Local-server) - look over there for more info!*
+_The info on this page largely comes from the [p5.js doc](https://github.com/processing/p5.js/wiki/Local-server) - look over there for more info!_
