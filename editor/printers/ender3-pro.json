@@ -1,0 +1,9 @@
+{
+  "name": "ender3-pro",
+  "baudRate": 115200,
+  "maxX": 220,
+  "maxY": 220,
+  "maxZ": 220,
+  "nozzleDiameter": 0.4,
+  "filamentDiameter": 1.75
+}
