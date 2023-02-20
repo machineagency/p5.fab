@@ -1,12 +1,12 @@
 function setup() {
-    createCanvas(windowWidth, windowHeight, WEBGL);
-    fab = createFab();
+  createCanvas(windowWidth, windowHeight, WEBGL);
+  fab = createFab();
 }
 
 function fabDraw() {
   // setup!
-  fab.setAbsolutePosition(); 
-  fab.setERelative(); 
+  fab.setAbsolutePosition();
+  fab.setERelative();
   fab.autoHome();
   fab.setTemps(205, 60); // (nozzle, bed)
   fab.introLine();
@@ -14,24 +14,21 @@ function fabDraw() {
   // make a spiral!
   let r = 80; // outer radius
   let numSpirals = 8; // how many concentric spirals to make
-  let center = createVector(fab.maxX/2, fab.maxY/2); // center the spiral on the print bed
+  let center = createVector(fab.centerX, fab.centerY); // center the spiral on the print bed
   let z = 0.2;
-  let step = TWO_PI/100;
+  let step = TWO_PI / 100;
   let speed = 20; // move slowly for adhesion
 
-
   for (let angle = 0; angle <= numSpirals * TWO_PI; angle += step) {
-    let x = r * cos(angle); 
-    let y = r * sin(angle); 
+    let x = r * cos(angle);
+    let y = r * sin(angle);
 
     if (angle == 0) {
       fab.moveRetract(center.x + x, center.y + y, z, 3 * speed);
-    }
-
-    else {
+    } else {
       fab.moveExtrude(center.x + x, center.y + y, z, speed);
     }
-    r -= 0.1; 
+    r -= 0.1;
   }
   fab.presentPart();
 }

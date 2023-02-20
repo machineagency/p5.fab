@@ -14,17 +14,21 @@ function fabDraw() {
   let layerHeight = 0.2;
   let h = 10;
   let s = 25;
-  let center = new p5.Vector(fab.maxX / 2, fab.maxY / 2);
+  let center = new p5.Vector(fab.centerX, fab.centerY);
   let maxAmp = 5;
   for (let z = layerHeight; z < h; z += layerHeight) {
     let amplitude = map(z, layerHeight, h, 0, maxAmp);
     for (let t = 0; t <= TWO_PI; t += TWO_PI / 100) {
-      let tt = map(t, 0, TWO_PI, 0, 6 * PI)
+      let tt = map(t, 0, TWO_PI, 0, 6 * PI);
       let dz = abs(sin(tt));
       if (z == layerHeight && t == 0) {
         fab.moveRetract(r * cos(t) + center.x, r * sin(t) + center.y, z);
       } else {
-        fab.moveExtrude(r * cos(t) + center.x, r * sin(t) + center.y, z + amplitude * dz);
+        fab.moveExtrude(
+          r * cos(t) + center.x,
+          r * sin(t) + center.y,
+          z + amplitude * dz
+        );
       }
     }
   }

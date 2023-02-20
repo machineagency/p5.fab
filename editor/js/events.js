@@ -5,21 +5,23 @@ function handleKeyPress(event) {
 
   if (keyCode === "Enter" && event.shiftKey && event.metaKey) {
     event.preventDefault();
-    evaluateJs('_fab.print();')
-  }
-
-  else if (keyCode === "Enter" && event.shiftKey) {
+    evaluateJs("_fab.print();");
+  } else if (keyCode === "Enter" && event.shiftKey) {
     event.preventDefault();
     updatePreview();
-  }
-  
-  else if (keyCode === "Slash" && event.metaKey) {
+  } else if (keyCode === "Slash" && event.metaKey) {
     editor.toggleComment();
   }
 }
 
+async function setPrinter(p) {
+  let response = await fetch("printers/" + p + ".json");
+  let settings = await response.text();
+  evaluateJs(`_fab.configure(${settings});`);
+}
+
 async function setTemplate(f) {
-  let response = await fetch('js/examples/' + f + '.js');
+  let response = await fetch("js/examples/" + f + ".js");
   let responseText = await response.text();
   editor.setValue(responseText);
 
@@ -28,14 +30,13 @@ async function setTemplate(f) {
 
 function saveSketch() {
   var sketchContents = editor.getValue();
-  var sketchBlob = new Blob([sketchContents], { type: 'text/plain' });
+  var sketchBlob = new Blob([sketchContents], { type: "text/plain" });
   var downloadLink = document.createElement("a");
-  downloadLink.download = 'fab.js';
+  downloadLink.download = "fab.js";
   downloadLink.innerHTML = "Download File";
   if (window.webkitURL != null) {
     downloadLink.href = window.webkitURL.createObjectURL(sketchBlob);
-  }
-  else {
+  } else {
     downloadLink.href = window.URL.createObjectURL(sketchBlob);
     downloadLink.onclick = destroyClickedElement;
     downloadLink.style.display = "none";
@@ -44,7 +45,9 @@ function saveSketch() {
   downloadLink.click();
 }
 
-document.getElementById('file-upload').addEventListener('change', handleFileSelect, false);
+document
+  .getElementById("file-upload")
+  .addEventListener("change", handleFileSelect, false);
 
 function handleFileSelect(event) {
   const reader = new FileReader();
@@ -55,7 +58,6 @@ function handleFileSelect(event) {
 function handleFileLoad(event) {
   console.log(event.target.result);
   editor.setValue(event.target.result);
-
 }
 
 function showInfoModal() {
@@ -65,5 +67,5 @@ function showInfoModal() {
 
   span.onclick = function () {
     modal.style.display = "none";
-  }
+  };
 }
