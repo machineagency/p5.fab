@@ -15,8 +15,8 @@ function fabDraw() {
   
   // variables for our hollow cube!
   let sideLength = 20; //mm
-  let x = (fab.maxX - sideLength)/2; 
-  let y = (fab.maxY - sideLength)/2;
+  let x = fab.centerX - sideLength/2; 
+  let y = fab.centerY - sideLength/2;
   let speed = 10; // mm/sec
   let layerHeight = 0.2; // mm
 

@@ -1,9 +1,0 @@
-{
-	"name": "ender3-pro",
-	"baudRate": 115200,
-	"width": 220,
-	"depth": 220,
-	"height": 220,
-	"nozzleDiameter": 0.4,
-	"filamentDiameter": 1.75
-}

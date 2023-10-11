@@ -106,6 +106,12 @@
         <input id="file-upload" type="file" />
       </div>
       <div class="right">
+        <div class="menu-item">printer
+          <div class="menu-item-dropdown-content">
+            <i onclick="setPrinter('ender3-pro')">Ender 3 Pro</i>
+            <i onclick="setPrinter('q5')">Flsun Q5</i>
+          </div>
+        </div> 
         <div class="menu-item" onclick="updatePreview()">visualize</div>
         <div class="menu-item" onclick="evaluateJs('_fab.serial.requestPort();')">connect</div>
         <div class="menu-item" onclick="evaluateJs('_fab.print();')">start print</div>

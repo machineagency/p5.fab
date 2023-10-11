@@ -1,0 +1,9 @@
+{
+  "name": "Q5",
+  "baudRate": 115200,
+  "radius": 100,
+  "maxZ": 200,
+  "nozzleDiameter": 1,
+  "filamentDiameter": 1.75,
+  "coordinateSystem": "delta"
+}
