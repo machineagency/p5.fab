@@ -38,7 +38,8 @@ function fabDraw() {
 
   fab.presentPart();
   console.log('about to render...')
-  fab.exportGCodeToFile();
+  printGCode() // print the gcode to the console
+  fab.exportGCode() // download the gcode file
 }
 
 function draw() {
