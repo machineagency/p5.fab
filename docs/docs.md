@@ -1,1 +1,29 @@
-docs to come...
+# G-Code Command Functions Guide
+This guide provides an overview of the G-Code command functions available in the p5.fab.js file, which is used for controlling a 3D printer within a p5.js sketch.
+
+## Basic Commands
+autoHome(): Homes the printer by moving the print head to the origin of the printer.
+setTemps(tNozzle, tBed): Sets the temperatures for the nozzle and the bed.
+setNozzleTemp(t): Sets the temperature of the nozzle.
+setBedTemp(t): Sets the temperature of the bed.
+setAbsolutePosition(): Sets the printer to use absolute positioning for movements.
+setRelativePosition(): Sets the printer to use relative positioning for movements.
+setERelative(): Sets the extruder to use relative mode, independent of other axes.
+fanOn(): Turns on the cooling fan.
+fanOff(): Turns off the cooling fan.
+pausePrint(t = null): Pauses the print for a specified time.
+restartPrinter(): Restarts the printer.
+
+## Movement Commands
+move(x, y, z, v): Moves the printer head to the specified coordinates at the given speed.
+moveX(x, v = 25): Moves the printer head along the X-axis.
+moveY(y, v = 25): Moves the printer head along the Y-axis.
+moveZ(z, v = 25): Moves the printer head along the Z-axis.
+up(z, v = 50): Moves the printer head up along the Z-axis.
+moveExtrude(x, y, z, v = 25, e = null, multiplier = false): Moves the printer head while extruding filament.
+moveRetract(x, y, z, v = 25, e = 8): Moves the printer head while retracting the filament.
+
+## Acceleration Commands
+setMaxAcceleration(x, y, z): Sets the maximum acceleration for the X, Y, and Z axes.
+setStartAcceleration(a): Sets the starting acceleration.
+These functions provide a high-level interface for controlling a 3D printer using G-code commands. Each function corresponds to a specific operation or command for the printer, such as moving the print head, setting temperatures, or managing the print process.
