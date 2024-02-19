@@ -92,6 +92,7 @@
     <div class="top-menu">
       <div class="left">
         <h1>p5.fab-FIDELIS</h1>
+        <div class="menu-item" onclick="updatePreview()">visualize</div>
         <div class="menu-item" onclick="setTemplate('new')">new</div>
         <div class="menu-item">examples
           <div class="menu-item-dropdown-content">
@@ -102,13 +103,17 @@
             <i onclick="setTemplate('demo')">demo</i>
           </div>
         </div>
-        <div class="menu-item" onclick="saveSketch()">save</div>
-        <label for="file-upload" class="menu-item">upload</label>
+        <!-- <div class="menu-item" onclick="saveSketch()">save</div> -->
+        <!-- <label for="file-upload" class="menu-item">upload</label>
+        <input id="file-upload" type="file" /> -->
+        <!-- add a buttion to download the gcode -->
+        <div class="menu-item" onclick="evaluateJs('_fab.saveGCode();')">save gcode</div>
+        <!-- add a button to upload the gcode -->
+        <label for="file-upload" class="menu-item" >gcode upload</label>
         <input id="file-upload" type="file" />
-        <div class="menu-item" onclick="updatePreview()">visualize</div>
         <!-- add a new link to the doc -->
         <a href="https://github.com/rayxsong/p5.fab-FIDELIS/blob/main/docs/docs.md" target="_blank" rel="noopener noreferrer"
-          id="top-bar-link">documentation</a>
+        id="top-bar-link">documentation</a>
       </div>
       <div class="right">
         <!-- <div class="menu-item">printer
