@@ -28,3 +28,13 @@ restartPrinter(): Restarts the printer.
 - setStartAcceleration(a): Sets the starting acceleration.
 
 These functions provide a high-level interface for controlling a 3D printer using G-code commands. Each function corresponds to a specific operation or command for the printer, such as moving the print head, setting temperatures, or managing the print process.
+
+## GCode Commands
+- printGCode(): Logs all G-code commands to the console with their corresponding index numbers.
+- exportGCode(): Opens a new tab or window displaying the G-code for easy copying or saving.
+- saveGCode(): Saves the G-code commands to a file named 'fab.gcode'.
+- loadGCode(gcodeContent): Loads G-code content into the instance, splitting it into individual commands.
+- parseCommand(command): Parses a G-code command, extracting and swapping Y and Z coordinates, and inverting Z.
+
+## Other
+- randomPoint(x, y, z): Generates a random point within the specified bounds, or the maximum bounds if none are provided.
