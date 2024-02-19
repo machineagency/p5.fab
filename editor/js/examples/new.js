@@ -12,7 +12,7 @@ function fabDraw() {
     // your artifact here!
     
     fab.printGCode() // print the gcode to the console
-    fab.exportGCode() // download the gcode file
+    // fab.exportGCode() // download the gcode file
 }
 
 function draw() {

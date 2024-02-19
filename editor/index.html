@@ -59,9 +59,9 @@
 
 <body>
   <div id="info-modal" class="modal">
-    <div class="modal-content">
+    <!-- <div class="modal-content">
       <span class="close">&times;</span>
-      <h1>p5.fab</h1>
+      <h1>p5.fab-FIDELIS</h1>
       <p>
         p5.fab is a p5.js library for digital fabrication. It helps you programmatically
         author toolpaths for low-level control over your machine!
@@ -86,12 +86,12 @@
         can read about that in our <a href="https://dl.acm.org/doi/10.1145/3532106.3533496">paper</a>, if you're
         interested!
       </p>
-    </div>
+    </div> -->
   </div>
   <div>
     <div class="top-menu">
       <div class="left">
-        <h1>p5.fab</h1>
+        <h1>p5.fab-FIDELIS</h1>
         <div class="menu-item" onclick="setTemplate('new')">new</div>
         <div class="menu-item">examples
           <div class="menu-item-dropdown-content">
@@ -105,6 +105,9 @@
         <label for="file-upload" class="menu-item">upload</label>
         <input id="file-upload" type="file" />
         <div class="menu-item" onclick="updatePreview()">visualize</div>
+        <!-- add a new link to the doc -->
+        <a href="https://github.com/rayxsong/p5.fab-FIDELIS/blob/main/docs/docs.md" target="_blank" rel="noopener noreferrer"
+          id="top-bar-link">documentation</a>
       </div>
       <div class="right">
         <!-- <div class="menu-item">printer
@@ -118,7 +121,7 @@
         <div class="menu-item" onclick="evaluateJs('_fab.stopPrint();')">stop print</div>
         <a href="https://github.com/machineagency/p5.fab" target="_blank" rel="noopener noreferrer"
           id="top-bar-link">source</a> -->
-        <div class="menu-item" onclick="showInfoModal()">info</div>
+        <!-- <div class="menu-item" onclick="showInfoModal()">info</div> -->
         <!-- <div class="menu-item">tweet artifact</div> -->
       </div>
     </div>
