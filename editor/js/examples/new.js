@@ -11,6 +11,8 @@ function fabDraw() {
     fab.introLine(); // line back and forth to clean nozzle
     // your artifact here!
     
+    printGCode() // print the gcode to the console
+    fab.exportGCode() // download the gcode file
 }
 
 function draw() {
