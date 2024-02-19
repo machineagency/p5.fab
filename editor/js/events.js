@@ -28,6 +28,13 @@ async function setTemplate(f) {
   updatePreview();
 }
 
+async function setSample(f) {
+  let response = await fetch("js/gcode-samples/" + f + ".gcode");
+  let responseText = await response.text();
+  evaluateJs(`_fab.loadGCode(\`${responseText}\`)`);
+  updatePreview();
+}
+
 function saveSketch() {
   var sketchContents = editor.getValue();
   var sketchBlob = new Blob([sketchContents], { type: "text/plain" });

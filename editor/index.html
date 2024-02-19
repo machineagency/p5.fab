@@ -111,6 +111,12 @@
         <!-- add a button to upload the gcode -->
         <label for="file-upload" class="menu-item" >gcode upload</label>
         <input id="file-upload" type="file" />
+        <div class="menu-item">gcode samples
+          <div class="menu-item-dropdown-content">
+            <i onclick="setSample('square')">Square</i>
+            <i onclick="setSample('nonplanar')">Nonplanar</i>
+          </div>
+        </div>
         <!-- add a new link to the doc -->
         <a href="https://github.com/rayxsong/p5.fab-FIDELIS/blob/main/docs/docs.md" target="_blank" rel="noopener noreferrer"
         id="top-bar-link">documentation</a>
