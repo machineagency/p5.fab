@@ -21,7 +21,7 @@ restartPrinter(): Restarts the printer.
 - moveY(y, v = 25): Moves the printer head along the Y-axis.
 - moveZ(z, v = 25): Moves the printer head along the Z-axis.
 - up(z, v = 50): Moves the printer head up along the Z-axis.
-- moveExtrude(x, y, z, v = 25, e = null, multiplier = false): Moves the printer head while extruding filament.
+- moveExtrude(x, y, z, v = 25, e = null, multiplier = false): Moves the printer head while extruding filament. v is feeding rate.
 - moveRetract(x, y, z, v = 25, e = 8): Moves the printer head while retracting the filament.
 
 ### Acceleration Commands
