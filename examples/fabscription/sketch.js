@@ -2,7 +2,11 @@ let fab;
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
-    fab = createFab();
+    let printerSettings = defaultPrinterSettings;
+    printerSettings.fabscribe = true;
+    fab = createFab(printerSettings);
+
+    midiMode();
   
     let connectButton = createButton('connect!');
     connectButton.position(20, 20);
