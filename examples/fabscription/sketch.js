@@ -65,8 +65,9 @@ function fabDraw() {
   let speed = 10; // mm/sec
   let layerHeight = 0.5; // mm
   let r = 15;
+  let height = 10;
 
-  for (let z = layerHeight; z <= sideLength; z += layerHeight) {
+  for (let z = layerHeight; z <= height; z += layerHeight) {
     for (let theta = 0; theta <= TWO_PI; theta += PI / 100) {
       let x = r * cos(theta) + center.x;
       let y = r * sin(theta) + center.y;
@@ -78,10 +79,7 @@ function fabDraw() {
       }
     }
   }
-
-
-  fab.presentPart();
-  fab.render();
+  fab.moveRetract(100, 100, 100); // pop up when finished
 }
 
 function draw() {
@@ -107,7 +105,7 @@ function midiSetup(midiData) {
   }
 
   if (midiData.note == 24) {
-    midiController.zOff = midiData.mapVelocity(0.5, 5);
+    midiController.zOff = midiData.mapVelocity(0.5, 8);
   }
 }
 
