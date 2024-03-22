@@ -58,32 +58,27 @@ function fabDraw() {
   fab.setAbsolutePosition(); // set all axes (x.y/z/extruder) to absolute
   fab.setERelative(); // put extruder in relative mode, independent of other axes
   fab.autoHome();
-  // fab.setNozzleTemp(205); // °C - you should use a temperature best suited for your filament!
-  // fab.setBedTemp(60); // °C - best temperature for good adhesion/no curling will vary based on filament used!
-  // fab.introLine(0.2); // draw to lines on the left side of the print bed
 
   // variables for our hollow cube!
-  let sideLength = 5; //mm
-  let x = 100;
-  let y = 100;
+  let sideLength = 25; //mm
+  let center = new p5.Vector(fab.maxX / 2, fab.maxY / 2);
   let speed = 10; // mm/sec
-  let layerHeight = 0.2; // mm
-
-  // design our hollow cube!
-  fab.moveRetract(x, y, layerHeight); // move to the start (x,y,z) position without extruding
+  let layerHeight = 0.5; // mm
+  let r = 15;
 
   for (let z = layerHeight; z <= sideLength; z += layerHeight) {
-    if (z == layerHeight) { // if it's the first layer
-      speed = 10; // slow print speeed down for the first layer
+    for (let theta = 0; theta <= TWO_PI; theta += PI / 100) {
+      let x = r * cos(theta) + center.x;
+      let y = r * sin(theta) + center.y;
+      if (z == layerHeight && theta == 0) {
+        fab.moveRetract(x, y, z, speed)
+      }
+      else {
+        fab.moveExtrude(x, y, z, speed)
+      }
     }
-    else {
-      speed = 25;
-    }
-    fab.moveExtrude(x + sideLength, y, z, speed); // move along the bottom side while extruding filament
-    fab.moveExtrude(x + sideLength, y + sideLength, z, speed); // right side
-    fab.moveExtrude(x, y + sideLength, z, speed); // top side
-    fab.moveExtrude(x, y, z, speed); //left side
   }
+
 
   fab.presentPart();
   fab.render();
@@ -104,11 +99,11 @@ function midiSetup(midiData) {
 
   if (midiData.note == 16) {
     // for any incoming value, we can name the property we want to cahnge in midiDraw
-    midiController.speed = midiData.mapVelocity(600, 3000); // values in mm/min
+    midiController.speed = midiData.mapVelocity(100, 1000); // values in mm/min
   }
 
   if (midiData.note == 20) {
-    midiController.extrusionMultiplier = midiData.mapVelocity(0.5, 5);
+    midiController.extrusionMultiplier = midiData.mapVelocity(0.5, 3);
   }
 
   if (midiData.note == 24) {
@@ -125,7 +120,7 @@ function midiDraw(moveCommand) {
   }
 
   if (midiController.extrusionMultiplier) {
-    moveCommand.e = midiController.extrusionMultiplier;
+    moveCommand.e *= midiController.extrusionMultiplier;
   }
 
   if (midiController.zOff) {

@@ -58,7 +58,6 @@ function fabDraw() {
       else {
         fab.moveExtrude(x, y, z, speed)
       }
-
     }
   }
 
